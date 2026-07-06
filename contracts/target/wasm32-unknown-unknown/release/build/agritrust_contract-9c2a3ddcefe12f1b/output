@@ -1,5 +1,0 @@
-cargo::rustc-check-cfg=cfg(odra_module, values(any()))
-cargo:rerun-if-env-changed=ODRA_MODULE
-cargo:rustc-cfg=odra_module=""
-cargo:rerun-if-env-changed=ODRA_BACKEND
-cargo:rustc-cfg=odra_backend=""
