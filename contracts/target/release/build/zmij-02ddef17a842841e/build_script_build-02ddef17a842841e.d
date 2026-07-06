@@ -1,0 +1,5 @@
+C:\Users\Sabiedu\.qwenpaw\workspaces\hack_1\agritrust-casper\contracts\target\release\build\zmij-02ddef17a842841e\build_script_build-02ddef17a842841e.d: C:\Users\Sabiedu\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\zmij-1.0.21\build.rs
+
+C:\Users\Sabiedu\.qwenpaw\workspaces\hack_1\agritrust-casper\contracts\target\release\build\zmij-02ddef17a842841e\build_script_build-02ddef17a842841e.exe: C:\Users\Sabiedu\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\zmij-1.0.21\build.rs
+
+C:\Users\Sabiedu\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\zmij-1.0.21\build.rs:

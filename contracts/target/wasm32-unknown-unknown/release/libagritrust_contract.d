@@ -1,0 +1,1 @@
+C:\Users\Sabiedu\.qwenpaw\workspaces\hack_1\agritrust-casper\contracts\target\wasm32-unknown-unknown\release\libagritrust_contract.rlib: C:\Users\Sabiedu\.qwenpaw\workspaces\hack_1\agritrust-casper\contracts\build.rs C:\Users\Sabiedu\.qwenpaw\workspaces\hack_1\agritrust-casper\contracts\src\lib.rs

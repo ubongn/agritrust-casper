@@ -1,0 +1,29 @@
+[package]
+name = "agritrust_contract"
+version = "0.1.0"
+edition = "2021"
+authors = ["Ubong <ubongnt@gmail.com>"]
+description = "AgriTrust — autonomous trade-finance (RWA invoice + credit + settlement) on Casper, built with the Odra framework."
+license = "Apache-2.0"
+
+[dependencies]
+odra = { version = "2.7.2", default-features = false }
+
+[build-dependencies]
+odra-build = "2.7.2"
+
+[lib]
+name = "agritrust_contract"
+path = "src/lib.rs"
+crate-type = ["cdylib", "lib"]
+
+[[bin]]
+name = "agritrust_contract_build"
+path = "bin/build_contract.rs"
+test = false
+
+[profile.release]
+panic = "abort"
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ["cfg(odra_module)"] }

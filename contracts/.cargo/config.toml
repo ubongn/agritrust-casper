@@ -1,0 +1,7 @@
+# Casper contracts: leave the `casper_*` host functions as runtime-provided
+# Wasm imports (resolved by the node's execution engine at run time).
+[target.wasm32-unknown-unknown]
+rustflags = [
+    "-C", "link-arg=--allow-undefined",
+    "-C", "link-arg=--import-memory",
+]
