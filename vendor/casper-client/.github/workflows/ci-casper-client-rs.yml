@@ -1,0 +1,90 @@
+---
+name: ci-casper-client-rs
+
+on:
+  push:
+    branches: [main, dev, release-2.0.0]
+    paths-ignore:
+      - '**.md'
+
+  pull_request:
+    branches: [main, dev, release-2.0.0]
+    paths-ignore:
+      - '**.md'
+
+jobs:
+  build_and_test:
+    strategy:
+      matrix:
+        #https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources
+        os: [ubuntu-22.04]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Get stable from rust-toolchain.toml
+        id: stable-toolchain
+        run: |
+          VER=$(sed -nr 's/channel\s+=\s+\"(.*)\"/\1/p' rust-toolchain.toml)
+          echo "RUST_CHANNEL=$VER" >> $GITHUB_ENV
+
+      - name: Install Toolchain - Stable
+        run: |
+          rustup update --no-self-update ${{ env.RUST_CHANNEL }}
+          rustup component add --toolchain ${{ env.RUST_CHANNEL }} rustfmt rust-src clippy
+          rustup default ${{ env.RUST_CHANNEL }}
+          rustup target add wasm32-unknown-unknown
+
+      - name: Fmt
+        uses: actions-rs/cargo@v1
+        with:
+          command: fmt
+          args: -- --check
+
+      - name: Audit
+        uses: actions-rs/cargo@v1
+        with:
+          command: audit
+          args: --ignore RUSTSEC-2025-0009 --ignore RUSTSEC-2025-0022 --ignore RUSTSEC-2025-0023
+
+      - name: Clippy
+        uses: actions-rs/cargo@v1
+        with:
+          command: clippy
+          args: --all-targets
+
+      - name: Clippy with no features
+        uses: actions-rs/cargo@v1
+        with:
+          command: clippy
+          args: --all-targets --no-default-features
+
+      - name: Doc
+        uses: actions-rs/cargo@v1
+        with:
+          command: doc
+          args: --no-deps
+
+      - name: Test
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
+
+      - name: Test with no features
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
+          args: --no-default-features
+
+      - name: Build
+        uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --all-targets
+
+      - name: Build lib for Wasm with no features
+        uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --lib --target wasm32-unknown-unknown --no-default-features

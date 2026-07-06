@@ -1,5 +1,44 @@
-"*.log"  
-"__pycache__/"  
-"target/"  
-"node_modules/"  
-".env"  
+# ── SECRETS — never commit ────────────────────────────────────────────────────
+**/keys/
+*.pem
+*.key
+*.seed
+.env
+**/.env
+
+# ── Rust / build artifacts ───────────────────────────────────────────────────
+**/target/
+**/*.rs.bk
+
+# ── Node ─────────────────────────────────────────────────────────────────────
+**/node_modules/
+**/package-lock.json
+npm-debug.log*
+
+# ── Python ───────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# ── Toolchain downloads (Binaryen / MinGW) — too large, rebuildable ──────────
+binaryen-v130.tar.gz
+binaryen-version_130/
+mingw*/
+
+# ── Logs & local deploy/query artifacts ──────────────────────────────────────
+*.log
+deploy_run*.log
+build.log
+acct*.json
+chainspec*.json
+chainspec.toml
+purse.txt
+
+# ── OS / editor ──────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/

@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "casper-js-sdk": "^2.15.4",
+    "node-fetch": "^2.7.0"
+  }
+}

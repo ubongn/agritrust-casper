@@ -1,0 +1,147 @@
+#[cfg(not(target_arch = "wasm32"))]
+use std::time::Duration;
+
+use crate::{Error, JsonRpcId, SuccessResponse, Verbosity};
+use jsonrpc_lite::{JsonRpc, Params};
+use once_cell::sync::OnceCell;
+use reqwest::{Client, Url};
+use serde::{de::DeserializeOwned, Serialize};
+use serde_json::json;
+
+const RPC_API_PATH: &str = "rpc";
+#[cfg(not(target_arch = "wasm32"))]
+const REQUEST_TIMEOUT: Duration = Duration::from_secs(15);
+
+/// Statically declared client used when making HTTP requests
+/// so opened connections are pooled.
+static CLIENT: OnceCell<Client> = OnceCell::new();
+
+/// Struct representing a single JSON-RPC call to the casper node.
+#[derive(Debug)]
+pub(crate) struct Call {
+    rpc_id: JsonRpcId,
+    node_address: Url,
+    #[allow(dead_code)]
+    verbosity: Verbosity,
+}
+
+/// `Call` encapsulates JSON-RPC calls made to the casper node service.
+impl Call {
+    pub(crate) fn new(
+        rpc_id: JsonRpcId,
+        node_address: &str,
+        verbosity: Verbosity,
+    ) -> Result<Self, Error> {
+        let url = if node_address.ends_with(RPC_API_PATH) {
+            node_address.to_string()
+        } else {
+            format!("{}/{}", node_address, RPC_API_PATH)
+        };
+
+        let node_address = Url::parse(&url).map_err(|_| Error::FailedToParseNodeAddress)?;
+        Ok(Self {
+            rpc_id,
+            // node_address: node_address.trim_end_matches('/').to_string(),
+            node_address,
+            verbosity,
+        })
+    }
+
+    pub(crate) async fn send_request<P: Serialize, R: DeserializeOwned>(
+        self,
+        method: &'static str,
+        maybe_params: Option<P>,
+    ) -> Result<SuccessResponse<R>, Error> {
+        let rpc_request = match maybe_params {
+            Some(params) => {
+                let params = Params::Map(
+                    json!(params)
+                        .as_object()
+                        .unwrap_or_else(|| panic!("should be a JSON Map"))
+                        .clone(),
+                );
+                JsonRpc::request_with_params(&self.rpc_id, method, params)
+            }
+            None => JsonRpc::request(&self.rpc_id, method),
+        };
+
+        #[cfg(feature = "std-fs-io")]
+        crate::json_pretty_print(&rpc_request, self.verbosity)?;
+
+        let client = CLIENT.get_or_init(|| {
+            let builder = Client::builder();
+
+            #[cfg(not(target_arch = "wasm32"))]
+            let builder = builder.timeout(REQUEST_TIMEOUT);
+
+            builder.build().expect("failed to initialize HTTP client")
+        });
+        let http_response = client
+            .post(self.node_address)
+            .json(&rpc_request)
+            .send()
+            .await
+            .map_err(|error| Error::FailedToGetResponse {
+                rpc_id: self.rpc_id.clone(),
+                rpc_method: method,
+                error,
+            })?;
+
+        if let Err(error) = http_response.error_for_status_ref() {
+            return Err(Error::ResponseIsHttpError {
+                rpc_id: self.rpc_id.clone(),
+                rpc_method: method,
+                error,
+            });
+        }
+
+        let rpc_response: JsonRpc =
+            http_response
+                .json()
+                .await
+                .map_err(|error| Error::FailedToParseResponse {
+                    rpc_id: self.rpc_id.clone(),
+                    rpc_method: method,
+                    error,
+                })?;
+
+        #[cfg(feature = "std-fs-io")]
+        crate::json_pretty_print(&rpc_response, self.verbosity)?;
+
+        let response_kind = match &rpc_response {
+            JsonRpc::Request(_) => "Request",
+            JsonRpc::Notification(_) => "Notification",
+            JsonRpc::Success(_) => "Success",
+            JsonRpc::Error(_) => "Error",
+        };
+
+        if let Some(json_value) = rpc_response.get_result().cloned() {
+            let value =
+                serde_json::from_value(json_value).map_err(|err| Error::InvalidRpcResponse {
+                    rpc_id: self.rpc_id.clone(),
+                    rpc_method: method,
+                    response_kind,
+                    response: json!(rpc_response),
+                    source: Some(err),
+                })?;
+            let success_response = SuccessResponse::new(self.rpc_id.clone(), value);
+            return Ok(success_response);
+        }
+
+        if let Some(error) = rpc_response.get_error().cloned() {
+            return Err(Error::ResponseIsRpcError {
+                rpc_id: self.rpc_id.clone(),
+                rpc_method: method,
+                error,
+            });
+        }
+
+        Err(Error::InvalidRpcResponse {
+            rpc_id: self.rpc_id.clone(),
+            rpc_method: method,
+            response_kind,
+            response: json!(rpc_response),
+            source: None,
+        })
+    }
+}

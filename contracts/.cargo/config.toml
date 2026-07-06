@@ -2,6 +2,7 @@
 # Wasm imports (resolved by the node's execution engine at run time).
 [target.wasm32-unknown-unknown]
 rustflags = [
+    "-C", "target-feature=-bulk-memory",
     "-C", "link-arg=--allow-undefined",
-    "-C", "link-arg=--import-memory",
+    "-C", "link-arg=--export-memory",
 ]
