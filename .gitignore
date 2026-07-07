@@ -35,6 +35,15 @@ acct*.json
 chainspec*.json
 chainspec.toml
 purse.txt
+resp.json
+resp2.json
+
+# ── Build helper scripts (not needed in repo) ────────────────────────────────
+contracts/wasm/check_*.py
+contracts/wasm/list_exports.py
+contracts/wasm/AgriTrust_O1.wasm
+contracts/wasm/AgriTrust_final.wasm
+contracts/wasm/AgriTrust_odra.wasm
 
 # ── OS / editor ──────────────────────────────────────────────────────────────
 .DS_Store

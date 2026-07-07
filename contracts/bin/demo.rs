@@ -49,7 +49,7 @@ fn main() {
     // ── Resolve the deployed contract package hash ────────────────────────
     let hash_str = env_str(
         "AGRITRUST_CONTRACT_HASH",
-        "hash-d9c333dc52fa793740f5157fd927522008ae6729418c8653de8f8e194f27f7b1",
+        "hash-c1dfe36ea24cac44224608ad69c880aedd0101cca405fbd686e461ac3d1bd29b",
     );
     let address: Address = hash_str
         .parse()

@@ -20,11 +20,21 @@
 
 | | |
 |---|---|
-| **Contract Package Hash** | `d9c333dc52fa793740f5157fd927522008ae6729418c8653de8f8e194f27f7b1` |
-| **Deploy Transaction** | [`9a36da0d…5e6e6bc`](https://testnet.cspr.live/transaction/9a36da0d090302b84368328d6fb5627159383a10f91c8abc42a3a5c005e6e6bc) |
-| **Deployer Account** | [`account-hash-2c17ed…ecddb2`](https://testnet.cspr.live/account/0202d328d5aebdfaff2e938bd4ef9edcd8d2c63c8d9fb87d77988f789db9404eb78b) |
+| **Contract Package Hash** | `c1dfe36ea24cac44224608ad69c880aedd0101cca405fbd686e461ac3d1bd29b` |
+| **Deploy Transaction** | [`d995aff2…e2e5b28`](https://testnet.cspr.live/transaction/d995aff2e39e1888a46808d213716134e78ab1cf87a9ee03312bc174e2e5b286) |
+| **Deployer Account** | [`account-hash-a22cea…569aae`](https://testnet.cspr.live/account/0202c76f3ed8165cf0b800367c95d0f53ef68970386f7b12a6cc3cb0d7ffd080152f) |
 | **Chain** | `casper-test` (protocol `2.2.2`) |
 | **Init params** | `protocol_fee_bps = 50` (0.5%), `grace_period_secs = 259200` (3 days) |
+
+### On-Chain Demo Transactions (5-Stage Lifecycle)
+
+| Stage | Transaction |
+|-------|-------------|
+| ① Authorize AI Agent | [`4ca657ba…`](https://testnet.cspr.live/transaction/4ca657ba082738a4f642ecb81163883feef94867ba30dc7831d166d657d68c26) |
+| ② Register Invoice (Maize, Ashanti Ghana) | [`4a6a2744…`](https://testnet.cspr.live/transaction/4a6a274455abc8a2693a5a0948f6215fbd700306420a8f46c69c21427750c170) |
+| ③ Post Risk Verdict (AA, score 820) | [`8b675f4d…`](https://testnet.cspr.live/transaction/8b675f4dede1bb3c1ed0877ffa577386f10122043681bc4a5a4347f515f14d65) |
+| ④ Fund Invoice (80 CSPR advance) | [`56941e83…`](https://testnet.cspr.live/transaction/56941e83d774406bfde242b775b7070e112bcdf4b172c49aa2ca798d8285a550) |
+| ⑤ Repay & Settle | [`d9dcb0b1…`](https://testnet.cspr.live/transaction/d9dcb0b1213fdc6c6e16e3f8a10375a464a63d23682b4272ae63dd41dd2325ff) |
 
 ---
 
@@ -291,7 +301,7 @@ cd agent
 pip install -r requirements.txt
 
 # Point it at the deployed contract + an x402 data server
-export AGRITRUST_CONTRACT_HASH=hash-d9c333dc52fa793740f5157fd927522008ae6729418c8653de8f8e194f27f7b1
+export AGRITRUST_CONTRACT_HASH=hash-c1dfe36ea24cac44224608ad69c880aedd0101cca405fbd686e461ac3d1bd29b
 export CASPER_NODE_URL=https://node.testnet.casper.network/rpc
 export X402_DATA_SERVER=http://localhost:8402
 export X402_NODE_CLIENT=../x402/client.js
