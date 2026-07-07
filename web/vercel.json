@@ -1,12 +1,8 @@
 {
-  "buildCommand": null,
-  "outputDirectory": ".",
-  "headers": [
+  "builds": [
     {
-      "source": "/(.*)",
-      "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" }
-      ]
+      "src": "index.html",
+      "use": "@vercel/static"
     }
   ]
 }
