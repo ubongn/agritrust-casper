@@ -28,12 +28,12 @@ class Settings:
     cspr_cloud_key: str = field(default_factory=lambda: _env("CSPR_CLOUD_API_KEY"))
 
     # Deployer / owner key (PEM on disk)
-    deployer_key_pem: str = field(default_factory=lambda: _env("CASPER_DEPLOYER_KEY", "keys/secret_key.pem"))
+    deployer_key_pem: str = field(default_factory=lambda: _env("CASPER_DEPLOYER_KEY", "keys/deployer_secret_key.pem"))
     # The agent's own key (authorized to post verdicts)
     agent_key_pem: str = field(default_factory=lambda: _env("CASPER_AGENT_KEY", "keys/agent_secret_key.pem"))
 
     # Deployed AgriTrust contract package hash, e.g. hash-<64hex>
-    contract_package_hash: str = field(default_factory=lambda: _env("AGRITRUST_CONTRACT_HASH"))
+    contract_package_hash: str = field(default_factory=lambda: _env("AGRITRUST_CONTRACT_HASH", "hash-d9c333dc52fa793740f5157fd927522008ae6729418c8653de8f8e194f27f7b1"))
 
     # ── x402 data-feed micropayments ────────────────────────────────────────
     # The base URL of the x402-protected data-feed server the agent pays per call.

@@ -1,0 +1,13 @@
+{
+  "name": "agritrust-x402",
+  "version": "1.0.0",
+  "description": "x402 micropayment data-feed server + payer client for AgriTrust",
+  "type": "module",
+  "scripts": {
+    "server": "node server.js",
+    "client": "node client.js"
+  },
+  "dependencies": {
+    "express": "^4.22.2"
+  }
+}

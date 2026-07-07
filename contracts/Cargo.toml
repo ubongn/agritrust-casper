@@ -30,6 +30,11 @@ name = "agritrust_deploy"
 path = "bin/deploy.rs"
 test = false
 
+[[bin]]
+name = "agritrust_demo"
+path = "bin/demo.rs"
+test = false
+
 [profile.release]
 panic = "abort"
 
