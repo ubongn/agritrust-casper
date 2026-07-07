@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgriTrust — Demo Presentation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0e0f;--bg-card:#121819;--bg-elev:#1a2224;
+  --green:#4ade80;--green-dim:#22c55e;--green-glow:rgba(74,222,128,.15);
+  --amber:#fbbf24;--amber-dim:#f59e0b;
+  --text:#e8f0ec;--text-dim:#8a9b94;--text-faint:#5a6b65;
+  --border:#1e2729;
+  --font-display:'Space Grotesk',sans-serif;
+  --font-body:'Inter',sans-serif;
+}
+html,body{height:100%;overflow:hidden}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body)}
+
+/* Slide system */
+.slides{position:relative;width:100vw;height:100vh}
+.slide{
+  position:absolute;top:0;left:0;width:100%;height:100%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:60px 80px;text-align:center;
+  opacity:0;pointer-events:none;
+  transition:opacity .5s ease;
+}
+.slide.active{opacity:1;pointer-events:auto}
+
+/* Slide nav */
+.nav{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+  z-index:100;display:flex;align-items:center;gap:20px;
+  background:rgba(10,14,15,.9);backdrop-filter:blur(20px);
+  border:1px solid var(--border);border-radius:100px;padding:8px 20px;
+}
+.nav-btn{
+  background:var(--bg-elev);border:1px solid var(--border);color:var(--text);
+  width:36px;height:36px;border-radius:50%;cursor:pointer;
+  font-size:1.1rem;display:flex;align-items:center;justify-content:center;
+  transition:all .2s;
+}
+.nav-btn:hover{background:var(--green);color:#0a0e0f;border-color:var(--green)}
+.nav-count{font-family:var(--font-display);font-weight:600;font-size:.85rem;color:var(--text-dim)}
+
+/* Progress bar */
+.progress{position:fixed;top:0;left:0;height:3px;background:var(--green);z-index:101;transition:width .3s}
+
+/* Slide elements */
+.slide-label{font-family:var(--font-display);font-size:.85rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--green);margin-bottom:20px}
+.slide h1{font-family:var(--font-display);font-size:clamp(2rem,5vw,3.8rem);font-weight:700;line-height:1.1;letter-spacing:-.03em;margin-bottom:24px;max-width:900px}
+.slide h1 .gradient{background:linear-gradient(135deg,var(--green) 0%,var(--amber) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.slide h2{font-family:var(--font-display);font-size:clamp(1.5rem,3.5vw,2.4rem);font-weight:700;line-height:1.15;letter-spacing:-.02em;margin-bottom:20px;max-width:800px}
+.slide p{font-size:clamp(1rem,1.5vw,1.2rem);color:var(--text-dim);max-width:650px;line-height:1.7;margin-bottom:16px}
+.slide strong{color:var(--text)}
+.slide em{color:var(--green);font-style:normal}
+
+/* Title slide */
+.title-slide .logo{font-size:5rem;margin-bottom:20px}
+.title-slide .badges{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:32px}
+.badge{padding:8px 16px;border-radius:100px;font-size:.85rem;font-weight:500;border:1px solid var(--border);background:var(--bg-card);display:inline-flex;align-items:center;gap:8px}
+.badge-dot{width:8px;height:8px;border-radius:50%}
+
+/* Stat grid */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:40px;max-width:900px}
+.stat-card{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:32px 20px}
+.stat-num{font-family:var(--font-display);font-size:2.5rem;font-weight:700;color:var(--amber);line-height:1}
+.stat-lbl{font-size:.8rem;color:var(--text-dim);margin-top:8px}
+
+/* Stage flow */
+.stage-flow{display:flex;flex-direction:column;gap:12px;width:100%;max-width:700px;margin-top:20px}
+.stage-row{display:flex;align-items:center;gap:20px;background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:20px 28px;text-align:left;transition:all .3s}
+.stage-row.active{border-color:var(--green-dim);transform:scale(1.02);box-shadow:0 0 30px var(--green-glow)}
+.stage-num{font-family:var(--font-display);font-size:1.5rem;font-weight:700;color:var(--green);width:44px;height:44px;border-radius:50%;background:var(--bg-elev);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.stage-info h3{font-family:var(--font-display);font-size:1.05rem;font-weight:600;margin-bottom:2px}
+.stage-info p{font-size:.85rem;color:var(--text-dim);margin:0}
+.stage-info code{background:var(--bg-elev);padding:2px 6px;border-radius:4px;font-size:.8em;color:var(--amber)}
+.stage-tx{font-family:monospace;font-size:.75rem;color:var(--green);margin-left:auto;white-space:nowrap}
+
+/* Feature cards */
+.feature-row{display:flex;gap:24px;margin-top:40px;max-width:900px}
+.feature-card{flex:1;background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:36px 28px;text-align:left}
+.feature-card .icon{font-size:2.5rem;margin-bottom:16px}
+.feature-card h3{font-family:var(--font-display);font-size:1.15rem;font-weight:600;margin-bottom:10px}
+.feature-card p{font-size:.9rem;color:var(--text-dim);margin:0}
+.feature-tag{display:inline-block;margin-top:16px;padding:4px 10px;border-radius:6px;font-size:.7rem;font-weight:600;background:var(--green-glow);color:var(--green)}
+
+/* Architecture diagram */
+.arch{display:flex;flex-direction:column;gap:4px;width:100%;max-width:800px;margin-top:20px}
+.arch-layer{display:flex;gap:16px;align-items:stretch}
+.arch-side{font-size:.75rem;color:var(--text-faint);width:100px;text-align:right;padding-right:16px;display:flex;align-items:center;justify-content:flex-end;white-space:nowrap}
+.arch-box{flex:1;padding:18px 24px;border-radius:10px;font-size:.9rem;font-weight:500;border:1px solid;text-align:left}
+.arch-box small{display:block;font-size:.75rem;font-weight:400;margin-top:2px;opacity:.7}
+.arch-green{background:rgba(74,222,128,.08);border-color:var(--green-dim);color:var(--green)}
+.arch-amber{background:rgba(251,191,36,.08);border-color:var(--amber-dim);color:var(--amber)}
+.arch-blue{background:rgba(96,165,250,.08);border-color:#60a5fa;color:#60a5fa}
+.arch-purple{background:rgba(168,85,247,.08);border-color:#a855f7;color:#a855f7}
+.arch-arrow{text-align:center;color:var(--text-faint);font-size:1rem;margin:2px 0}
+
+/* Links */
+.links-grid{display:flex;gap:24px;margin-top:40px;flex-wrap:wrap;justify-content:center}
+.link-card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:24px 36px;text-decoration:none;color:var(--text);transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:8px}
+.link-card:hover{border-color:var(--green-dim);transform:translateY(-3px)}
+.link-card .link-icon{font-size:2rem}
+.link-card .link-label{font-family:var(--font-display);font-weight:600;font-size:.95rem}
+.link-card .link-url{font-size:.75rem;color:var(--text-dim)}
+
+/* Close slide */
+.close-slide .logo{font-size:4rem;margin-bottom:16px}
+
+/* Speaker notes */
+.notes{
+  position:fixed;bottom:80px;left:50%;transform:translateX(-50%);
+  max-width:700px;width:90%;
+  background:rgba(18,24,25,.95);backdrop-filter:blur(20px);
+  border:1px solid var(--border);border-radius:12px;
+  padding:16px 24px;font-size:.85rem;color:var(--text-dim);
+  display:none;line-height:1.6;
+}
+.notes.show{display:block}
+.notes strong{color:var(--green)}
+
+/* Responsive */
+@media(max-width:768px){
+  .slide{padding:40px 24px}
+  .stat-grid{grid-template-columns:1fr 1fr}
+  .feature-row{flex-direction:column}
+  .arch-layer{flex-direction:column}
+  .arch-side{width:auto;text-align:left;padding:0}
+}
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress" style="width:10%"></div>
+
+<div class="slides" id="slides">
+
+  <!-- SLIDE 1: Title -->
+  <div class="slide title-slide active" data-notes="<strong>Hook:</strong> '570 million farmers are locked out of credit. Their data is off-chain, and banks can't underwrite a $400 loan profitably. AgriTrust fixes this with an autonomous AI agent — live on Casper right now.'">
+    <div class="logo">🌾</div>
+    <h1><span class="gradient">AgriTrust</span></h1>
+    <p>Autonomous Trade-Finance for Emerging-Market Farmers</p>
+    <div class="badges">
+      <span class="badge"><span class="badge-dot" style="background:var(--green)"></span> Live on Casper Testnet</span>
+      <span class="badge"><span class="badge-dot" style="background:var(--amber)"></span> x402 Micropayments</span>
+      <span class="badge"><span class="badge-dot" style="background:#a855f7"></span> Odra 2.8.2</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: Problem -->
+  <div class="slide" data-notes="<strong>Problem:</strong> 'Smallholder farmers are creditworthy — predictable yields, growing demand — but their data lives scattered across weather APIs, satellite imagery, and market feeds. Traditional finance can't stitch it together cheaply enough for a $400 invoice.'">
+    <div class="slide-label">The Problem</div>
+    <h2>570 million farmers locked out of credit.</h2>
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-num">570M</div>
+        <div class="stat-lbl">Smallholder farms worldwide</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">$240B</div>
+        <div class="stat-lbl">Unmet credit demand</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">40%</div>
+        <div class="stat-lbl">Post-harvest losses</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">$0.01</div>
+        <div class="stat-lbl">x402 data check cost</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: Solution -->
+  <div class="slide" data-notes="<strong>Solution:</strong> 'AgriTrust closes that gap with an autonomous agent that buys data, underwrites risk, and deploys capital — all on-chain, all autonomous, all verifiable.'">
+    <div class="slide-label">The Solution</div>
+    <h2>An autonomous agent that buys data, prices risk, and deploys capital — <span style="color:var(--green)">all on-chain</span>.</h2>
+    <p style="font-size:1.3rem;max-width:550px">
+      <strong>evaluate</strong> → <strong>tokenize</strong> → <strong>fund</strong> → <strong>collect</strong> → <strong>settle</strong>
+    </p>
+    <p style="margin-top:16px">No banks. No intermediaries. Just an AI agent, a smart contract, and x402 micropayments.</p>
+  </div>
+
+  <!-- SLIDE 4: Architecture -->
+  <div class="slide" data-notes="<strong>Architecture:</strong> 'Three technologies make this work: an AI underwriting agent that synthesizes off-chain data, x402 micropayments for pay-per-byte data access, and RWA tokenization on Casper using Odra.'">
+    <div class="slide-label">Architecture</div>
+    <h2>How the pieces connect</h2>
+    <div class="arch">
+      <div class="arch-layer">
+        <div class="arch-side">Agent Layer</div>
+        <div class="arch-box arch-green">🤖 AI Underwriter<small>Python · LLM + heuristic scoring</small></div>
+        <div class="arch-box arch-green">📊 Data Sources<small>Weather · NDVI · Prices · KYC</small></div>
+      </div>
+      <div class="arch-arrow">↕ HTTP 402</div>
+      <div class="arch-layer">
+        <div class="arch-side">Payment Layer</div>
+        <div class="arch-box arch-amber">⚡ x402 Server<small>Facilitator + secp256k1 verify → data release</small></div>
+      </div>
+      <div class="arch-arrow">↕ post_verdict()</div>
+      <div class="arch-layer">
+        <div class="arch-side">Contract Layer</div>
+        <div class="arch-box arch-blue">📜 AgriTrust Smart Contract<small>Odra 2.8.2 · authorize → register → verdict → fund → settle</small></div>
+      </div>
+      <div class="arch-arrow">↕ TransactionV1</div>
+      <div class="arch-layer">
+        <div class="arch-side">Chain Layer</div>
+        <div class="arch-box arch-purple">🔗 Casper Testnet<small>Protocol 2.2.2 · WASM session code</small></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: Features -->
+  <div class="slide" data-notes="<strong>Three pillars:</strong> 'An autonomous AI agent queries weather APIs, satellite NDVI, market-price feeds, and farmer KYC — synthesizing them into a deterministic on-chain risk verdict. Every data check is paid per-request via HTTP 402. A farmer's harvest becomes an on-chain invoice with commodity, region, face value, and maturity.'">
+    <div class="slide-label">Three Pillars</div>
+    <h2>Three technologies, one autonomous credit pipeline</h2>
+    <div class="feature-row">
+      <div class="feature-card">
+        <div class="icon">🤖</div>
+        <h3>AI Underwriting Agent</h3>
+        <p>An autonomous agent queries weather, NDVI, prices, and KYC — synthesizing them into a deterministic on-chain risk verdict in seconds.</p>
+        <span class="feature-tag">Agentic × On-Chain</span>
+      </div>
+      <div class="feature-card">
+        <div class="icon">⚡</div>
+        <h3>x402 Micropayments</h3>
+        <p>Every data check is paid per-request via HTTP 402 + secp256k1 signatures. No subscriptions — fractions of a cent per request.</p>
+        <span class="feature-tag">Pay-per-byte</span>
+      </div>
+      <div class="feature-card">
+        <div class="icon">📄</div>
+        <h3>RWA Tokenization</h3>
+        <p>A farmer's harvest becomes an on-chain invoice. Full lifecycle: Registered → Evaluated → Funded → Settled / Defaulted.</p>
+        <span class="feature-tag">Real-World Asset</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: Live Demo -->
+  <div class="slide" data-notes="<strong>The money shot:</strong> 'Here's a complete RWA trade-finance lifecycle — 5 real Casper Testnet transactions. First, the owner authorizes the AI agent. The farmer registers their harvest — Maize, Ashanti Ghana, 100 CSPR. The AI agent buys data via x402, then posts a risk verdict — score 820, band AA. An LP funds 80 CSPR. At maturity, the farmer repays. Settled.'">
+    <div class="slide-label">Live On-Chain Demo</div>
+    <h2>5 real Casper Testnet transactions</h2>
+    <div class="stage-flow">
+      <div class="stage-row active">
+        <div class="stage-num">1</div>
+        <div class="stage-info">
+          <h3>Authorize AI Agent</h3>
+          <p>Owner onboards the AI underwriter on-chain</p>
+        </div>
+        <div class="stage-tx">4ca657ba… ✅</div>
+      </div>
+      <div class="stage-row active">
+        <div class="stage-num">2</div>
+        <div class="stage-info">
+          <h3>Tokenize Invoice</h3>
+          <p><strong>Maize · Ashanti, Ghana · 100 CSPR</strong></p>
+        </div>
+        <div class="stage-tx">4a6a2744… ✅</div>
+      </div>
+      <div class="stage-row active">
+        <div class="stage-num">3</div>
+        <div class="stage-info">
+          <h3>Post Risk Verdict</h3>
+          <p>Score 820 · Band AA · 80% advance · After <code>x402</code> data purchase</p>
+        </div>
+        <div class="stage-tx">8b675f4d… ✅</div>
+      </div>
+      <div class="stage-row active">
+        <div class="stage-num">4</div>
+        <div class="stage-info">
+          <h3>Fund Invoice</h3>
+          <p>LP advances <strong>80 CSPR</strong> working capital</p>
+        </div>
+        <div class="stage-tx">56941e83… ✅</div>
+      </div>
+      <div class="stage-row active">
+        <div class="stage-num">5</div>
+        <div class="stage-info">
+          <h3>Repay & Settle</h3>
+          <p>Farmer repays → LP paid out → <strong style="color:var(--green)">SETTLED</strong></p>
+        </div>
+        <div class="stage-tx">d9dcb0b1… ✅</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: Links -->
+  <div class="slide" data-notes="<strong>Links:</strong> 'Everything is open source and verifiable. The website, the GitHub repo, and the final settlement transaction on the Casper explorer.'">
+    <div class="slide-label">Verify Everything</div>
+    <h2>All open source. All on-chain. All verifiable.</h2>
+    <div class="links-grid">
+      <a href="https://agritrust-casper.vercel.app" target="_blank" class="link-card">
+        <div class="link-icon">🌐</div>
+        <div class="link-label">Project Website</div>
+        <div class="link-url">agritrust-casper.vercel.app</div>
+      </a>
+      <a href="https://github.com/ubongn/agritrust-casper" target="_blank" class="link-card">
+        <div class="link-icon">💻</div>
+        <div class="link-label">GitHub Source</div>
+        <div class="link-url">github.com/ubongn/agritrust-casper</div>
+      </a>
+      <a href="https://testnet.cspr.live/transaction/d9dcb0b1213fdc6c6e16e3f8a10375a464a63d23682b4272ae63dd41dd2325ff" target="_blank" class="link-card">
+        <div class="link-icon">🔗</div>
+        <div class="link-label">Final Settlement Tx</div>
+        <div class="link-url">testnet.cspr.live</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: Close -->
+  <div class="slide close-slide" data-notes="<strong>Close:</strong> 'AgriTrust — autonomous trade-finance for emerging-market farmers. Live on Casper, fully on-chain, fully verifiable. Finance the unbanked harvest.'">
+    <div class="logo">🌾</div>
+    <h1>Finance the <span class="gradient">unbanked harvest.</span></h1>
+    <p>Built for the Casper Agentic Buildathon. Every transaction is real, on-chain, and verifiable.</p>
+  </div>
+
+</div>
+
+<!-- Speaker notes -->
+<div class="notes" id="notes"></div>
+
+<!-- Navigation -->
+<div class="nav">
+  <button class="nav-btn" onclick="prev()">‹</button>
+  <span class="nav-count" id="count">1 / 8</span>
+  <button class="nav-btn" onclick="next()">›</button>
+</div>
+
+<script>
+let current = 0;
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+const progress = document.getElementById('progress');
+const count = document.getElementById('count');
+const notes = document.getElementById('notes');
+
+function show(i) {
+  if (i < 0 || i >= total) return;
+  slides[current].classList.remove('active');
+  current = i;
+  slides[current].classList.add('active');
+  progress.style.width = ((i + 1) / total * 100) + '%';
+  count.textContent = `${i + 1} / ${total}`;
+
+  // Show speaker notes
+  const noteText = slides[current].dataset.notes;
+  if (noteText) {
+    notes.innerHTML = noteText;
+    notes.classList.add('show');
+  } else {
+    notes.classList.remove('show');
+  }
+}
+
+function next() { show(current + 1); }
+function prev() { show(current - 1); }
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); next(); }
+  if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); prev(); }
+  if (e.key === 'Home') show(0);
+  if (e.key === 'End') show(total - 1);
+});
+
+// Touch swipe
+let touchX = 0;
+document.addEventListener('touchstart', (e) => { touchX = e.touches[0].clientX; });
+document.addEventListener('touchend', (e) => {
+  const diff = touchX - e.changedTouches[0].clientX;
+  if (Math.abs(diff) > 50) { diff > 0 ? next() : prev(); }
+});
+
+// Init
+show(0);
+</script>
+</body>
+</html>
