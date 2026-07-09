@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: |
+          if [ -f web/package.json ]; then
+            cd web && npm ci || npm install
+          elif [ -f ui/package.json ]; then
+            cd ui && npm ci || npm install
+          fi
+      - name: Build
+        run: |
+          if [ -f web/package.json ]; then
+            cd web && npm run build --if-present
+          elif [ -f ui/package.json ]; then
+            cd ui && npm run build --if-present
+          fi
