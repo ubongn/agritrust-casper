@@ -61,6 +61,9 @@
     .hero h1 .gradient{background:linear-gradient(135deg,var(--green) 0%,var(--amber) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
     .hero p{font-size:clamp(1rem,2vw,1.25rem);color:var(--text-dim);max-width:680px;margin:0 auto 40px}
     .hero-actions{display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
+    .hero-portal-links{display:flex;gap:24px;flex-wrap:wrap;justify-content:center;margin-top:28px}
+    .hero-portal-links a{color:var(--text-dim);font-size:.95rem;font-weight:500;padding:8px 16px;border:1px solid var(--border);border-radius:100px;transition:all .2s;text-decoration:none}
+    .hero-portal-links a:hover{color:var(--green);border-color:var(--green-dim);background:var(--green-glow);text-decoration:none}
     .btn-primary{background:var(--green);color:#0a0e0f;padding:14px 32px;border-radius:10px;font-weight:600;font-size:.95rem;border:none;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:8px;text-decoration:none}
     .btn-primary:hover{background:#5ef592;transform:translateY(-2px);box-shadow:0 8px 30px var(--green-glow);text-decoration:none}
     .btn-secondary{background:var(--bg-card);color:var(--text);padding:14px 32px;border-radius:10px;font-weight:600;font-size:.95rem;border:1px solid var(--border);cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:8px;text-decoration:none}
@@ -141,8 +144,9 @@
   <nav id="navbar">
     <a href="#" class="nav-logo"><span class="logo-icon">🌾</span> AgriTrust</a>
     <div class="nav-links">
-      <a href="#problem">Problem</a>
-      <a href="#lifecycle">Lifecycle</a>
+      <a href="/dashboard">Dashboard</a>
+      <a href="/farmer">Farmer Portal</a>
+      <a href="/lp">LP Portal</a>
       <a href="#features">Features</a>
       <a href="#architecture">Architecture</a>
       <button class="theme-toggle" onclick="toggleTheme()" title="Toggle dark/light">🌗</button>
@@ -160,7 +164,7 @@
     <h1 class="fade-up delay-1">Autonomous <span class="gradient">Trade-Finance</span><br>for Emerging-Market Farmers</h1>
     <p class="fade-up delay-2">An AI underwriting agent finances a farmer's harvest against a tokenized Real-World-Asset invoice — paying for every off-chain data check via <strong>x402 micropayments</strong>. Fully on-chain. Fully autonomous.</p>
     <div class="hero-actions fade-up delay-3">
-      <a href="#lifecycle" class="btn-primary">See the Live Demo →</a>
+      <a href="/dashboard" class="btn-primary">Launch Interactive dApp →</a>
       <a href="https://github.com/ubongn/agritrust-casper" target="_blank" class="btn-secondary">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
         View Source
@@ -282,8 +286,8 @@
     <h2>Finance the unbanked harvest.</h2>
     <p>Built for the Casper Agentic Buildathon. Every transaction is real, on-chain, and verifiable.</p>
     <div class="hero-actions">
-      <a href="https://github.com/ubongn/agritrust-casper" target="_blank" class="btn-primary">Explore the Code →</a>
-      <a href="https://testnet.cspr.live/transaction/d9dcb0b1213fdc6c6e16e3f8a10375a464a63d23682b4272ae63dd41dd2325ff" target="_blank" class="btn-secondary">Verify Final Settlement →</a>
+      <a href="/dashboard" class="btn-primary">Launch Interactive dApp →</a>
+      <a href="https://github.com/ubongn/agritrust-casper" target="_blank" class="btn-secondary">Explore the Code</a>
     </div>
   </section>
 
