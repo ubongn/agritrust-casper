@@ -24,7 +24,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel, Field
 
-from .state import store, InvoiceStatus, STATUS_LABELS, STATUS_COLORS, RiskVerdict
+from .state import store, store_backend, InvoiceStatus, STATUS_LABELS, STATUS_COLORS, RiskVerdict
 from . import casper
 from .underwriter import evaluate_invoice
 
@@ -123,6 +123,7 @@ async def health():
         "contract": casper.CONTRACT_HASH[:24] + "...",
         "cli_available": CLI_AVAILABLE,
         "chain": casper.CHAIN_NAME,
+        "backend": store_backend,
     }
 
 
