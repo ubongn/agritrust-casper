@@ -355,6 +355,14 @@ async def index_page():
     return JSONResponse({"error": "index.html not found"}, status_code=404)
 
 
+@app.get("/favicon.svg")
+async def favicon():
+    path = os.path.join(WEB_DIR, "favicon.svg")
+    if os.path.exists(path):
+        return FileResponse(path, media_type="image/svg+xml")
+    raise HTTPException(404, "favicon not found")
+
+
 @app.get("/dashboard")
 async def dashboard_page():
     path = os.path.join(WEB_DIR, "dashboard.html")
