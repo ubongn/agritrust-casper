@@ -1,0 +1,12 @@
+# Vercel serves web/ as a static site.
+# Ignore Python/Render files so Vercel doesn't auto-detect Python.
+api/
+requirements.txt
+render.yaml
+test_api.py
+agent/
+contracts/
+keys/
+*.py
+*.wasm
+.venv/
