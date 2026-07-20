@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgriTrust — Protocol Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0e0f;--bg-card:#121819;--bg-elev:#1a2224;
+  --green:#4ade80;--green-dim:#22c55e;--green-glow:rgba(74,222,128,.15);
+  --amber:#fbbf24;--amber-dim:#f59e0b;
+  --blue:#60a5fa;--red:#f87171;
+  --text:#e8f0ec;--text-dim:#8a9b94;--text-faint:#5a6b65;
+  --border:#1e2729;--radius:14px;
+  --nav-bg:rgba(10,14,15,.8);--btn-on-green:#0a0e0f;
+  --font-display:'Space Grotesk',sans-serif;--font-body:'Inter',sans-serif;
+}
+:root.light{
+  --bg:#f8faf9;--bg-card:#ffffff;--bg-elev:#f1f5f3;
+  --green:#16a34a;--green-dim:#15803d;--green-glow:rgba(22,163,74,.12);
+  --amber:#d97706;--amber-dim:#b45309;
+  --text:#0f1a14;--text-dim:#4b5e54;--text-faint:#7a8b81;
+  --border:#dde5e1;--nav-bg:rgba(248,250,249,.85);--btn-on-green:#fff;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-height:1.6;min-height:100vh}
+a{color:var(--green);text-decoration:none}
+
+/* Nav */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 32px;display:flex;align-items:center;justify-content:space-between;background:var(--nav-bg);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:var(--font-display);font-weight:700;font-size:1.4rem;display:flex;align-items:center;gap:8px;color:var(--text);text-decoration:none}
+.nav-links{display:flex;gap:24px;align-items:center}
+.nav-links a,.nav-links button{color:var(--text-dim);font-size:.9rem;font-weight:500;background:none;border:none;cursor:pointer;text-decoration:none;transition:color .2s;font-family:var(--font-body)}
+.nav-links a:hover,.nav-links button:hover{color:var(--text)}
+.nav-links a.active{color:var(--green)}
+.theme-toggle{background:var(--bg-elev);border:1px solid var(--border);color:var(--text);width:36px;height:36px;border-radius:8px;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center}
+@media(max-width:768px){.nav-links a:not(.nav-cta){display:none}}
+
+/* Layout */
+.container{max-width:1200px;margin:0 auto;padding:100px 24px 60px}
+.page-title{font-family:var(--font-display);font-size:2rem;font-weight:700;margin-bottom:8px}
+.page-subtitle{color:var(--text-dim);font-size:1.05rem;margin-bottom:32px}
+
+/* Stat cards */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:40px}
+.stat-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;transition:transform .2s,border-color .2s}
+.stat-card:hover{transform:translateY(-2px);border-color:var(--green-dim)}
+.stat-label{font-size:.8rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--text-faint);margin-bottom:8px}
+.stat-value{font-family:var(--font-display);font-size:2.2rem;font-weight:700;line-height:1}
+.stat-unit{font-size:.9rem;color:var(--text-dim);font-weight:400}
+.stat-sub{font-size:.8rem;color:var(--text-dim);margin-top:4px}
+
+/* Chain status bar */
+.chain-bar{display:flex;align-items:center;gap:8px;background:var(--bg-card);border:1px solid var(--border);border-radius:100px;padding:8px 20px;font-size:.85rem;color:var(--text-dim);margin-bottom:32px;width:fit-content}
+.pulse{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* Two column */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:40px}
+@media(max-width:768px){.two-col{grid-template-columns:1fr}}
+
+.section-title{font-family:var(--font-display);font-size:1.2rem;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+
+/* Invoice table */
+.invoice-list{display:flex;flex-direction:column;gap:8px}
+.invoice-row{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;transition:border-color .2s}
+.invoice-row:hover{border-color:var(--green-dim)}
+.invoice-info{display:flex;flex-direction:column;gap:2px}
+.invoice-id{font-family:var(--font-display);font-weight:600;font-size:.95rem}
+.invoice-meta{font-size:.8rem;color:var(--text-dim)}
+.badge{padding:3px 10px;border-radius:100px;font-size:.75rem;font-weight:600;white-space:nowrap}
+.badge-0{background:rgba(96,165,250,.15);color:var(--blue)}
+.badge-1{background:rgba(251,191,36,.15);color:var(--amber)}
+.badge-2{background:rgba(74,222,128,.15);color:var(--green)}
+.badge-3{background:rgba(34,197,94,.2);color:var(--green-dim)}
+.badge-4{background:rgba(248,113,113,.15);color:var(--red)}
+
+/* Tx feed */
+.tx-feed{display:flex;flex-direction:column;gap:6px;max-height:400px;overflow-y:auto}
+.tx-item{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;font-size:.85rem}
+.tx-ep{font-family:var(--font-display);font-weight:600;color:var(--green);min-width:140px}
+.tx-inv{color:var(--text-dim);min-width:40px}
+.ts-time{color:var(--text-faint);margin-left:auto;font-size:.8rem}
+.tx-link{color:var(--blue);font-size:.8rem;text-decoration:none}
+.tx-link:hover{text-decoration:underline}
+
+/* Loading */
+.loading{text-align:center;padding:40px;color:var(--text-dim)}
+
+/* Footer links */
+.footer-links{display:flex;gap:16px;margin-top:40px;padding-top:24px;border-top:1px solid var(--border)}
+.footer-links a{color:var(--text-dim);font-size:.9rem;text-decoration:none;transition:color .2s}
+.footer-links a:hover{color:var(--green)}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo"><span>🌾</span> AgriTrust</a>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/dashboard" class="active">Dashboard</a>
+    <a href="/farmer">Farmer Portal</a>
+    <a href="/lp">LP Portal</a>
+    <button class="theme-toggle" onclick="toggleTheme()">🌗</button>
+    <a href="https://github.com/ubongn/agritrust-casper" target="_blank" style="background:var(--green);color:var(--btn-on-green);padding:6px 16px;border-radius:8px;font-weight:600">GitHub</a>
+  </div>
+</nav>
+
+<div class="container">
+  <h1 class="page-title">Protocol Dashboard</h1>
+  <p class="page-subtitle">Live on-chain statistics from the AgriTrust contract on Casper Testnet</p>
+
+  <div class="chain-bar" id="chain-bar">
+    <span class="pulse"></span>
+    <span id="chain-text">Connecting to Casper Testnet...</span>
+  </div>
+
+  <div class="stats-grid" id="stats-grid">
+    <div class="stat-card"><div class="stat-label">Total Invoices</div><div class="stat-value" id="s-invoices">-</div></div>
+    <div class="stat-card"><div class="stat-label">Total Funded</div><div class="stat-value" id="s-funded">- <span class="stat-unit">CSPR</span></div></div>
+    <div class="stat-card"><div class="stat-label">Total Settled</div><div class="stat-value" id="s-settled">- <span class="stat-unit">CSPR</span></div></div>
+    <div class="stat-card"><div class="stat-label">x402 Data Spend</div><div class="stat-value" id="s-x402">- <span class="stat-unit">CSPR</span></div><div class="stat-sub" id="s-x402-sub"></div></div>
+    <div class="stat-card"><div class="stat-label">Active Agents</div><div class="stat-value" id="s-agents">-</div><div class="stat-sub">AI underwriters</div></div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <h2 class="section-title">📋 Recent Invoices</h2>
+      <div class="invoice-list" id="invoice-list">
+        <div class="loading">Loading invoices...</div>
+      </div>
+    </div>
+    <div>
+      <h2 class="section-title">⚡ Transaction Feed</h2>
+      <div class="tx-feed" id="tx-feed">
+        <div class="loading">Loading transactions...</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-links">
+    <a href="/farmer">→ Register Invoice</a>
+    <a href="/lp">→ Fund Invoice</a>
+    <a href="https://testnet.cspr.live" target="_blank">→ Casper Testnet Explorer</a>
+    <a href="https://github.com/ubongn/agritrust-casper" target="_blank">→ Source Code</a>
+  </div>
+</div>
+
+<script>
+const API = ''; // Same origin — API served by FastAPI backend
+
+async function api(path) {
+  const r = await fetch(`${API}${path}`);
+  if (!r.ok) throw new Error(`${r.status}`);
+  return r.json();
+}
+
+async function loadChain() {
+  try {
+    const s = await api('/api/chain/status');
+    document.getElementById('chain-text').textContent =
+      `Casper Testnet · Block #${s.block_height.toLocaleString()} · Connected`;
+  } catch(e) {
+    document.getElementById('chain-bar').innerHTML = '<span style="color:var(--red)">⚠ Cannot reach Casper Testnet</span>';
+  }
+}
+
+async function loadStats() {
+  const s = await api('/api/stats');
+  document.getElementById('s-invoices').textContent = s.total_invoices;
+  document.getElementById('s-funded').innerHTML = `${s.total_funded_cspr.toFixed(1)} <span class="stat-unit">CSPR</span>`;
+  document.getElementById('s-settled').innerHTML = `${s.total_settled_cspr.toFixed(1)} <span class="stat-unit">CSPR</span>`;
+  document.getElementById('s-x402').innerHTML = `${s.total_x402_spent_cspr.toFixed(4)} <span class="stat-unit">CSPR</span>`;
+  document.getElementById('s-x402-sub').textContent = '4 data feeds per evaluation';
+  document.getElementById('s-agents').textContent = s.active_agents;
+}
+
+async function loadInvoices() {
+  const data = await api('/api/invoices');
+  const list = document.getElementById('invoice-list');
+  if (!data.invoices.length) { list.innerHTML = '<div class="loading">No invoices yet</div>'; return; }
+  list.innerHTML = data.invoices.map(inv => `
+    <div class="invoice-row">
+      <div class="invoice-info">
+        <span class="invoice-id">Invoice #${inv.id} — ${inv.commodity}</span>
+        <span class="invoice-meta">${inv.region} · ${inv.face_amount_cspr.toFixed(0)} CSPR · ${inv.maturity_date}</span>
+      </div>
+      <span class="badge badge-${inv.status}">${inv.status_label}</span>
+    </div>
+  `).join('');
+}
+
+async function loadTxs() {
+  const data = await api('/api/transactions?limit=15');
+  const feed = document.getElementById('tx-feed');
+  if (!data.transactions.length) { feed.innerHTML = '<div class="loading">No transactions</div>'; return; }
+  feed.innerHTML = data.transactions.map(tx => `
+    <div class="tx-item">
+      <span class="tx-ep">${tx.entry_point}</span>
+      <span class="tx-inv">${tx.invoice_id ? '#'+tx.invoice_id : ''}</span>
+      <span class="ts-time">${new Date(tx.timestamp * 1000).toLocaleString()}</span>
+      ${tx.cspr_live_url ? `<a class="tx-link" href="${tx.cspr_live_url}" target="_blank">verify ↗</a>` : ''}
+    </div>
+  `).join('');
+}
+
+// Theme
+function toggleTheme(){document.documentElement.classList.toggle('light');localStorage.setItem('agritrust-theme',document.documentElement.classList.contains('light')?'light':'dark')}
+(function(){if(localStorage.getItem('agritrust-theme')==='light')document.documentElement.classList.add('light')})();
+
+// Init
+Promise.all([loadChain(), loadStats(), loadInvoices(), loadTxs()]).catch(e => console.error(e));
+setInterval(() => { loadStats(); loadInvoices(); loadTxs(); }, 15000);
+</script>
+</body>
+</html>

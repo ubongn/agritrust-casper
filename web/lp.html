@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgriTrust — LP Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0e0f;--bg-card:#121819;--bg-elev:#1a2224;
+  --green:#4ade80;--green-dim:#22c55e;--green-glow:rgba(74,222,128,.15);
+  --amber:#fbbf24;--amber-dim:#f59e0b;
+  --blue:#60a5fa;--red:#f87171;
+  --text:#e8f0ec;--text-dim:#8a9b94;--text-faint:#5a6b65;
+  --border:#1e2729;--radius:14px;
+  --nav-bg:rgba(10,14,15,.8);--btn-on-green:#0a0e0f;
+  --font-display:'Space Grotesk',sans-serif;--font-body:'Inter',sans-serif;
+}
+:root.light{
+  --bg:#f8faf9;--bg-card:#ffffff;--bg-elev:#f1f5f3;
+  --green:#16a34a;--green-dim:#15803d;--green-glow:rgba(22,163,74,.12);
+  --amber:#d97706;--amber-dim:#b45309;
+  --text:#0f1a14;--text-dim:#4b5e54;--text-faint:#7a8b81;
+  --border:#dde5e1;--nav-bg:rgba(248,250,249,.85);--btn-on-green:#fff;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-height:1.6;min-height:100vh}
+a{color:var(--green);text-decoration:none}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 32px;display:flex;align-items:center;justify-content:space-between;background:var(--nav-bg);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:var(--font-display);font-weight:700;font-size:1.4rem;display:flex;align-items:center;gap:8px;color:var(--text)}
+.nav-links{display:flex;gap:24px;align-items:center}
+.nav-links a,.nav-links button{color:var(--text-dim);font-size:.9rem;font-weight:500;background:none;border:none;cursor:pointer;text-decoration:none;transition:color .2s;font-family:var(--font-body)}
+.nav-links a:hover{color:var(--text)}
+.nav-links a.active{color:var(--green)}
+.theme-toggle{background:var(--bg-elev);border:1px solid var(--border);color:var(--text);width:36px;height:36px;border-radius:8px;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center}
+@media(max-width:768px){.nav-links a:not(.nav-cta){display:none}}
+
+.container{max-width:1000px;margin:0 auto;padding:100px 24px 60px}
+.page-title{font-family:var(--font-display);font-size:2rem;font-weight:700;margin-bottom:8px}
+.page-subtitle{color:var(--text-dim);font-size:1.05rem;margin-bottom:40px}
+
+/* Portfolio summary */
+.portfolio-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:40px}
+.port-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:24px}
+.port-label{font-size:.8rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--text-faint);margin-bottom:8px}
+.port-value{font-family:var(--font-display);font-size:1.8rem;font-weight:700;line-height:1}
+.port-unit{font-size:.85rem;color:var(--text-dim)}
+
+/* Investment cards */
+.inv-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:16px;transition:border-color .2s}
+.inv-card:hover{border-color:var(--green-dim)}
+.inv-header{display:flex;justify-content:space-between;align-items:start;margin-bottom:16px}
+.inv-title{font-family:var(--font-display);font-size:1.1rem;font-weight:600}
+.inv-meta{font-size:.85rem;color:var(--text-dim);margin-top:2px}
+.risk-badge{padding:4px 12px;border-radius:100px;font-size:.8rem;font-weight:600}
+.risk-LOW{background:var(--green-glow);color:var(--green)}
+.risk-MEDIUM{background:rgba(251,191,36,.15);color:var(--amber)}
+.risk-HIGH{background:rgba(248,113,113,.15);color:var(--red)}
+
+.inv-body{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px;padding:16px;background:var(--bg-elev);border-radius:10px}
+@media(max-width:600px){.inv-body{grid-template-columns:1fr}}
+.metric{text-align:center}
+.metric-label{font-size:.75rem;color:var(--text-faint);text-transform:uppercase;letter-spacing:.05em}
+.metric-value{font-family:var(--font-display);font-size:1.3rem;font-weight:700;margin-top:4px}
+
+.inv-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;padding:12px 24px;border-radius:10px;font-weight:600;font-size:.95rem;font-family:var(--font-body);cursor:pointer;border:none;transition:all .2s}
+.btn-primary{background:var(--green);color:var(--btn-on-green)}
+.btn-primary:hover{background:var(--green-dim)}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed}
+.btn-ghost{background:var(--bg-elev);color:var(--text-dim);border:1px solid var(--border)}
+.btn-ghost:hover{color:var(--text)}
+.result-msg{font-size:.85rem;color:var(--green);font-weight:500;animation:fadeIn .4s}
+.result-msg.err{color:var(--red)}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:var(--btn-on-green);border-radius:50%;animation:spin .6s linear infinite;margin-right:6px;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+.empty{text-align:center;padding:40px;color:var(--text-dim)}
+.section-title{font-family:var(--font-display);font-size:1.2rem;font-weight:600;margin-bottom:16px}
+</style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-logo"><span>🌾</span> AgriTrust</a>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/dashboard">Dashboard</a>
+    <a href="/farmer">Farmer Portal</a>
+    <a href="/lp" class="active">LP Portal</a>
+    <button class="theme-toggle" onclick="toggleTheme()">🌗</button>
+    <a href="https://github.com/ubongn/agritrust-casper" target="_blank" style="background:var(--green);color:var(--btn-on-green);padding:6px 16px;border-radius:8px;font-weight:600">GitHub</a>
+  </div>
+</nav>
+
+<div class="container">
+  <h1 class="page-title">LP Portal</h1>
+  <p class="page-subtitle">Fund AI-evaluated invoices and earn protocol fees. Every invoice is scored by the on-chain agent before funding.</p>
+
+  <div class="portfolio-grid">
+    <div class="port-card"><div class="port-label">Deployed Capital</div><div class="port-value" id="p-funded">- <span class="port-unit">CSPR</span></div></div>
+    <div class="port-card"><div class="port-label">Repaid & Settled</div><div class="port-value" id="p-settled">- <span class="port-unit">CSPR</span></div></div>
+    <div class="port-card"><div class="port-label">Avg Yield</div><div class="port-value" id="p-yield">- <span class="port-unit">APR</span></div></div>
+    <div class="port-card"><div class="port-label">Available Deals</div><div class="port-value" id="p-available">-</div></div>
+  </div>
+
+  <h2 class="section-title">💡 Available Deals (AI-Evaluated, awaiting funding)</h2>
+  <div id="deals"></div>
+
+  <h2 class="section-title" style="margin-top:40px">📜 Your Active Positions</h2>
+  <div id="positions"></div>
+</div>
+
+<script>
+const API = ''; // Same origin
+
+async function api(path, opts) {
+  const r = await fetch(`${API}${path}`, opts);
+  if (!r.ok) throw new Error((await r.json()).detail || r.status);
+  return r.json();
+}
+
+async function loadStats() {
+  const s = await api('/api/stats');
+  document.getElementById('p-funded').innerHTML = `${s.total_funded_cspr.toFixed(1)} <span class="port-unit">CSPR</span>`;
+  document.getElementById('p-settled').innerHTML = `${s.total_settled_cspr.toFixed(1)} <span class="port-unit">CSPR</span>`;
+  const settled = s.total_settled_cspr;
+  const yieldPct = settled > 0 ? ((s.total_settled_cspr * 0.15) / settled * 100).toFixed(1) : '0.0';
+  document.getElementById('p-yield').innerHTML = `${yieldPct}% <span class="port-unit">avg</span>`;
+}
+
+async function loadDeals() {
+  const data = await api('/api/invoices?status=1'); // EVALUATED only
+  const container = document.getElementById('deals');
+  if (!data.invoices.length) {
+    container.innerHTML = '<div class="empty">No evaluated invoices awaiting funding.<br><a href="/farmer">Register & evaluate invoices →</a></div>';
+    return;
+  }
+  document.getElementById('p-available').textContent = data.invoices.length;
+  container.innerHTML = data.invoices.map(inv => {
+    const v = inv.verdict;
+    const advance = (inv.face_amount_cspr * v.max_advance_bps / 10000);
+    const expectedReturn = advance * (1 + v.discount_rate_bps / 10000);
+    return `
+    <div class="inv-card" id="deal-${inv.id}">
+      <div class="inv-header">
+        <div>
+          <div class="inv-title">Invoice #${inv.id} — ${inv.commodity}</div>
+          <div class="inv-meta">${inv.region} · ${inv.face_amount_cspr.toFixed(0)} CSPR face value · Score: ${v.score}/1000</div>
+        </div>
+        <span class="risk-badge risk-${v.risk_band}">${v.risk_band} RISK</span>
+      </div>
+      <div class="inv-body">
+        <div class="metric"><div class="metric-label">Your Advance</div><div class="metric-value" style="color:var(--blue)">${advance.toFixed(0)} CSPR</div></div>
+        <div class="metric"><div class="metric-label">Expected Return</div><div class="metric-value" style="color:var(--green)">${expectedReturn.toFixed(0)} CSPR</div></div>
+        <div class="metric"><div class="metric-label">Yield (${inv.maturity_days}d)</div><div class="metric-value">${(v.discount_rate_bps/100).toFixed(1)}%</div></div>
+      </div>
+      <div class="inv-actions">
+        <button class="btn btn-primary" onclick="fund(${inv.id})"><span id="btn-${inv.id}">Fund ${(v.max_advance_bps/100).toFixed(0)}%</span></button>
+        <span class="result-msg" id="msg-${inv.id}"></span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function loadPositions() {
+  const data = await api('/api/invoices');
+  // Show funded (status 2) and settled (status 3)
+  const positions = data.invoices.filter(i => i.status === 2 || i.status === 3);
+  const container = document.getElementById('positions');
+  if (!positions.length) {
+    container.innerHTML = '<div class="empty">No active positions. Fund a deal above to get started.</div>';
+    return;
+  }
+  const labels = { 2: 'ACTIVE', 3: 'SETTLED', 4: 'DEFAULTED' };
+  const colors = { 2: 'var(--amber)', 3: 'var(--green)', 4: 'var(--red)' };
+  container.innerHTML = positions.map(inv => `
+    <div class="inv-card">
+      <div class="inv-header">
+        <div>
+          <div class="inv-title">Invoice #${inv.id} — ${inv.commodity}</div>
+          <div class="inv-meta">${inv.region} · Funded ${inv.advance_amount_cspr.toFixed(0)} CSPR ${inv.funder_address ? '· ' + inv.funder_address.slice(0,12) + '...' : ''}</div>
+        </div>
+        <span class="risk-badge" style="background:${colors[inv.status]}22;color:${colors[inv.status]}">${labels[inv.status]}</span>
+      </div>
+      ${inv.tx_url ? `<a href="${inv.tx_url}" target="_blank" style="font-size:.85rem;color:var(--blue)">View tx on Casper Explorer ↗</a>` : ''}
+    </div>
+  `).join('');
+}
+
+async function fund(id) {
+  const btn = document.getElementById(`btn-${id}`);
+  const msg = document.getElementById(`msg-${id}`);
+  btn.innerHTML = '<span class="spinner"></span>Funding...';
+  msg.textContent = '';
+  try {
+    const result = await api(`/api/invoice/${id}/fund`, { method: 'POST' });
+    msg.textContent = '✓ ' + result.message;
+    msg.classList.remove('err');
+    btn.textContent = 'Funded';
+    btn.closest('button').disabled = true;
+    setTimeout(() => { loadDeals(); loadPositions(); loadStats(); }, 1500);
+  } catch (err) {
+    msg.textContent = '✗ ' + err.message;
+    msg.classList.add('err');
+    btn.textContent = 'Retry';
+  }
+}
+
+function toggleTheme(){document.documentElement.classList.toggle('light');localStorage.setItem('agritrust-theme',document.documentElement.classList.contains('light')?'light':'dark')}
+(function(){if(localStorage.getItem('agritrust-theme')==='light')document.documentElement.classList.add('light')})();
+
+Promise.all([loadStats(), loadDeals(), loadPositions()]).catch(e => console.error(e));
+setInterval(() => { loadStats(); loadDeals(); loadPositions(); }, 15000);
+</script>
+</body>
+</html>

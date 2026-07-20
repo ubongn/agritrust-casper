@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgriTrust — Farmer Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0e0f;--bg-card:#121819;--bg-elev:#1a2224;
+  --green:#4ade80;--green-dim:#22c55e;--green-glow:rgba(74,222,128,.15);
+  --amber:#fbbf24;--amber-dim:#f59e0b;
+  --blue:#60a5fa;--red:#f87171;
+  --text:#e8f0ec;--text-dim:#8a9b94;--text-faint:#5a6b65;
+  --border:#1e2729;--radius:14px;
+  --nav-bg:rgba(10,14,15,.8);--btn-on-green:#0a0e0f;
+  --font-display:'Space Grotesk',sans-serif;--font-body:'Inter',sans-serif;
+}
+:root.light{
+  --bg:#f8faf9;--bg-card:#ffffff;--bg-elev:#f1f5f3;
+  --green:#16a34a;--green-dim:#15803d;--green-glow:rgba(22,163,74,.12);
+  --amber:#d97706;--amber-dim:#b45309;
+  --text:#0f1a14;--text-dim:#4b5e54;--text-faint:#7a8b81;
+  --border:#dde5e1;--nav-bg:rgba(248,250,249,.85);--btn-on-green:#fff;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-height:1.6;min-height:100vh}
+a{color:var(--green);text-decoration:none}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 32px;display:flex;align-items:center;justify-content:space-between;background:var(--nav-bg);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:var(--font-display);font-weight:700;font-size:1.4rem;display:flex;align-items:center;gap:8px;color:var(--text)}
+.nav-links{display:flex;gap:24px;align-items:center}
+.nav-links a,.nav-links button{color:var(--text-dim);font-size:.9rem;font-weight:500;background:none;border:none;cursor:pointer;text-decoration:none;transition:color .2s;font-family:var(--font-body)}
+.nav-links a:hover{color:var(--text)}
+.nav-links a.active{color:var(--green)}
+.theme-toggle{background:var(--bg-elev);border:1px solid var(--border);color:var(--text);width:36px;height:36px;border-radius:8px;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center}
+@media(max-width:768px){.nav-links a:not(.nav-cta){display:none}}
+
+.container{max-width:1000px;margin:0 auto;padding:100px 24px 60px}
+.page-title{font-family:var(--font-display);font-size:2rem;font-weight:700;margin-bottom:8px}
+.page-subtitle{color:var(--text-dim);font-size:1.05rem;margin-bottom:40px}
+
+.form-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:32px;margin-bottom:40px}
+.form-group{margin-bottom:20px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:600px){.form-row{grid-template-columns:1fr}}
+label{display:block;font-size:.85rem;font-weight:600;color:var(--text-dim);margin-bottom:6px}
+input,select{width:100%;padding:12px 16px;background:var(--bg-elev);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:1rem;font-family:var(--font-body);transition:border-color .2s}
+input:focus,select:focus{outline:none;border-color:var(--green)}
+input::placeholder{color:var(--text-faint)}
+.btn{display:inline-block;padding:14px 32px;border-radius:10px;font-weight:600;font-size:1rem;font-family:var(--font-body);cursor:pointer;border:none;transition:all .2s}
+.btn-primary{background:var(--green);color:var(--btn-on-green)}
+.btn-primary:hover{background:var(--green-dim);transform:translateY(-1px)}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.hint{font-size:.8rem;color:var(--text-faint);margin-top:4px}
+
+/* Result panel */
+.result-panel{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:32px;display:none}
+.result-panel.show{display:block;animation:fadeIn .4s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.result-header{display:flex;align-items:center;gap:12px;margin-bottom:24px}
+.result-icon{font-size:2rem}
+.result-title{font-family:var(--font-display);font-size:1.3rem;font-weight:600}
+.score-display{text-align:center;margin:24px 0;padding:24px;background:var(--bg-elev);border-radius:var(--radius)}
+.score-circle{width:120px;height:120px;margin:0 auto 12px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-direction:column;border:3px solid}
+.score-circle.low{border-color:var(--green);background:var(--green-glow)}
+.score-circle.medium{border-color:var(--amber);background:rgba(251,191,36,.1)}
+.score-circle.high{border-color:var(--red);background:rgba(248,113,113,.1)}
+.score-num{font-family:var(--font-display);font-size:2.2rem;font-weight:700;line-height:1}
+.score-max{font-size:.8rem;color:var(--text-dim)}
+.score-band{font-family:var(--font-display);font-weight:600;font-size:1.1rem;text-transform:uppercase;letter-spacing:.05em}
+
+.terms-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
+@media(max-width:600px){.terms-grid{grid-template-columns:1fr}}
+.term-box{background:var(--bg-elev);border-radius:10px;padding:16px;text-align:center}
+.term-label{font-size:.8rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
+.term-value{font-family:var(--font-display);font-size:1.6rem;font-weight:700}
+
+.data-feeds{background:var(--bg-elev);border-radius:10px;padding:16px;margin:20px 0}
+.data-feeds-title{font-size:.85rem;font-weight:600;color:var(--text-dim);margin-bottom:12px}
+.feed-item{display:flex;align-items:center;justify-content:space-between;padding:6px 0;font-size:.85rem;border-bottom:1px solid var(--border)}
+.feed-item:last-child{border:none}
+.feed-name{color:var(--text-dim)}
+.feed-status{color:var(--green);font-weight:600}
+
+.invoice-list-title{font-family:var(--font-display);font-size:1.2rem;font-weight:600;margin:32px 0 16px}
+.inv-item{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.inv-info span{display:block}
+.inv-info .id{font-family:var(--font-display);font-weight:600}
+.inv-info .meta{font-size:.8rem;color:var(--text-dim)}
+.badge{padding:3px 10px;border-radius:100px;font-size:.75rem;font-weight:600;white-space:nowrap}
+.badge-0{background:rgba(96,165,250,.15);color:var(--blue)}
+.badge-1{background:rgba(251,191,36,.15);color:var(--amber)}
+.badge-2{background:rgba(74,222,128,.15);color:var(--green)}
+.badge-3{background:rgba(34,197,94,.2);color:var(--green-dim)}
+.badge-4{background:rgba(248,113,113,.15);color:var(--red)}
+.spinner{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:var(--btn-on-green);border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;margin-right:8px}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-logo"><span>🌾</span> AgriTrust</a>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/dashboard">Dashboard</a>
+    <a href="/farmer" class="active">Farmer Portal</a>
+    <a href="/lp">LP Portal</a>
+    <button class="theme-toggle" onclick="toggleTheme()">🌗</button>
+    <a href="https://github.com/ubongn/agritrust-casper" target="_blank" style="background:var(--green);color:var(--btn-on-green);padding:6px 16px;border-radius:8px;font-weight:600">GitHub</a>
+  </div>
+</nav>
+
+<div class="container">
+  <h1 class="page-title">Farmer Portal</h1>
+  <p class="page-subtitle">Register your harvest invoice. The AI agent evaluates risk in seconds and posts a signed verdict on-chain.</p>
+
+  <div class="form-card">
+    <form id="register-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Commodity</label>
+          <select name="commodity" required>
+            <option value="">Select crop...</option>
+            <option value="maize">Maize</option>
+            <option value="rice">Rice</option>
+            <option value="cassava">Cassava</option>
+            <option value="cocoa">Cocoa</option>
+            <option value="coffee">Coffee</option>
+            <option value="yam">Yam</option>
+            <option value="beans">Beans</option>
+            <option value="vegetables">Vegetables</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Region</label>
+          <select name="region" required>
+            <option value="">Select region...</option>
+            <option value="Ashanti, Ghana">Ashanti, Ghana</option>
+            <option value="Lagos, Nigeria">Lagos, Nigeria</option>
+            <option value="Abuja, Nigeria">Abuja, Nigeria</option>
+            <option value="Nairobi, Kenya">Nairobi, Kenya</option>
+            <option value="Kampala, Uganda">Kampala, Uganda</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Face Value (CSPR)</label>
+          <input type="number" name="face_amount_cspr" placeholder="e.g. 500" min="50" max="10000" step="50" required>
+          <div class="hint">The total value of your harvest invoice</div>
+        </div>
+        <div class="form-group">
+          <label>Maturity (days)</label>
+          <input type="number" name="maturity_days" placeholder="e.g. 90" min="7" max="365" required>
+          <div class="hint">Days until you can repay</div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary" id="submit-btn">Register & Evaluate Invoice</button>
+    </form>
+  </div>
+
+  <div class="result-panel" id="result-panel">
+    <div class="result-header">
+      <span class="result-icon" id="result-icon"></span>
+      <div>
+        <div class="result-title" id="result-title"></div>
+        <div style="font-size:.85rem;color:var(--text-dim)" id="result-subtitle"></div>
+      </div>
+    </div>
+    <div class="score-display">
+      <div class="score-circle" id="score-circle">
+        <div class="score-num" id="score-num"></div>
+        <div class="score-max">/ 1000</div>
+      </div>
+      <div class="score-band" id="score-band"></div>
+    </div>
+    <div class="terms-grid">
+      <div class="term-box"><div class="term-label">Max Advance</div><div class="term-value" id="term-advance"></div></div>
+      <div class="term-box"><div class="term-label">Discount Rate</div><div class="term-value" id="term-discount"></div></div>
+    </div>
+    <div class="data-feeds">
+      <div class="data-feeds-title">📊 x402 Data Feeds (acquired)</div>
+      <div id="feeds-list"></div>
+    </div>
+    <div style="font-size:.85rem;color:var(--text-dim);text-align:center">
+      Verdict data hash: <code id="data-hash" style="color:var(--blue)"></code><br>
+      <a id="tx-link" href="#" target="_blank" style="font-size:.85rem">View on Casper Explorer ↗</a>
+    </div>
+  </div>
+
+  <h2 class="invoice-list-title">Your Invoices</h2>
+  <div id="my-invoices"><div style="color:var(--text-dim);text-align:center;padding:20px">Loading...</div></div>
+</div>
+
+<script>
+const API = ''; // Same origin
+
+async function api(path, opts) {
+  const r = await fetch(`${API}${path}`, opts);
+  if (!r.ok) throw new Error((await r.json()).detail || r.status);
+  return r.json();
+}
+
+document.getElementById('register-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const form = e.target;
+  const btn = document.getElementById('submit-btn');
+  const data = Object.fromEntries(new FormData(form));
+  data.face_amount_cspr = parseFloat(data.face_amount_cspr);
+  data.maturity_days = parseInt(data.maturity_days);
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Registering on Casper...';
+
+  try {
+    // Step 1: Register
+    const reg = await api('/api/invoice/register', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(data)
+    });
+    const newId = reg.invoice.id;
+    btn.innerHTML = '<span class="spinner"></span> AI evaluating via x402...';
+
+    // Step 2: Evaluate
+    await new Promise(r => setTimeout(r, 800));
+    const eval_ = await api(`/api/invoice/${newId}/evaluate`, { method: 'POST' });
+
+    showResult(eval_);
+    form.reset();
+    loadInvoices();
+  } catch (err) {
+    alert('Error: ' + err.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Register & Evaluate Invoice';
+  }
+});
+
+function showResult(result) {
+  const v = result.verdict;
+  const panel = document.getElementById('result-panel');
+  panel.classList.add('show');
+
+  const icons = { LOW: '✅', MEDIUM: '⚡', HIGH: '⚠️' };
+  const band = v.risk_band;
+  document.getElementById('result-icon').textContent = icons[band];
+  document.getElementById('result-title').textContent = `Verdict: ${band} RISK`;
+  document.getElementById('result-subtitle').textContent = result.message;
+
+  const circle = document.getElementById('score-circle');
+  circle.className = 'score-circle ' + band.toLowerCase();
+  document.getElementById('score-num').textContent = v.score;
+  document.getElementById('score-band').textContent = band + ' RISK';
+
+  document.getElementById('term-advance').textContent = (v.max_advance_bps / 100).toFixed(0) + '%';
+  document.getElementById('term-discount').textContent = (v.discount_rate_bps / 100).toFixed(1) + '%';
+
+  const feeds = [
+    { name: 'Weather Forecast', value: v.signals.weather },
+    { name: 'Commodity Price', value: v.signals.price_trend },
+    { name: 'Yield Index', value: 'stable' },
+    { name: 'KYC Verification', value: v.signals.kyc },
+  ];
+  document.getElementById('feeds-list').innerHTML = feeds.map(f =>
+    `<div class="feed-item"><span class="feed-name">${f.name}</span><span class="feed-status">✓ ${f.value}</span></div>`
+  ).join('');
+
+  document.getElementById('data-hash').textContent = v.data_hash;
+  if (result.tx_url) {
+    document.getElementById('tx-link').href = result.tx_url;
+    document.getElementById('tx-link').style.display = '';
+  } else {
+    document.getElementById('tx-link').style.display = 'none';
+  }
+
+  panel.scrollIntoView({ behavior: 'smooth' });
+}
+
+async function loadInvoices() {
+  try {
+    const data = await api('/api/invoices');
+    const list = document.getElementById('my-invoices');
+    if (!data.invoices.length) { list.innerHTML = '<div style="color:var(--text-dim);text-align:center;padding:20px">No invoices yet. Register one above.</div>'; return; }
+    list.innerHTML = data.invoices.map(inv => `
+      <div class="inv-item">
+        <div class="inv-info">
+          <span class="id">Invoice #${inv.id} — ${inv.commodity}</span>
+          <span class="meta">${inv.region} · ${inv.face_amount_cspr.toFixed(0)} CSPR · ${inv.created_at_date}</span>
+        </div>
+        <span class="badge badge-${inv.status}">${inv.status_label}</span>
+      </div>
+    `).join('');
+  } catch(e) { document.getElementById('my-invoices').innerHTML = `<div style="color:var(--red)">Error: ${e.message}</div>`; }
+}
+
+function toggleTheme(){document.documentElement.classList.toggle('light');localStorage.setItem('agritrust-theme',document.documentElement.classList.contains('light')?'light':'dark')}
+(function(){if(localStorage.getItem('agritrust-theme')==='light')document.documentElement.classList.add('light')})();
+
+loadInvoices();
+</script>
+</body>
+</html>
