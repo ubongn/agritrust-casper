@@ -3,380 +3,449 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AgriTrust — Demo Presentation</title>
+<title>AgriTrust — Casper Agentic Buildathon Demo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#0a0e0f;--bg-card:#121819;--bg-elev:#1a2224;
-  --green:#4ade80;--green-dim:#22c55e;--green-glow:rgba(74,222,128,.15);
-  --amber:#fbbf24;--amber-dim:#f59e0b;
-  --text:#e8f0ec;--text-dim:#8a9b94;--text-faint:#5a6b65;
-  --border:#1e2729;
+  --bg:#fafaf9;--bg-card:#ffffff;--bg-elev:#f5f5f4;
+  --green:#16a34a;--green-dim:#15803d;--green-soft:#dcfce7;
+  --amber:#d97706;--amber-soft:#fef3c7;
+  --blue:#2563eb;--blue-soft:#dbeafe;
+  --text:#1c1917;--text-dim:#57534e;--text-faint:#a8a29e;
+  --border:#e7e5e4;
+  --shadow:0 1px 3px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.04);
+  --shadow-lg:0 4px 24px rgba(0,0,0,.08);
   --font-display:'Space Grotesk',sans-serif;
   --font-body:'Inter',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
 }
-html,body{height:100%;overflow:hidden}
-body{background:var(--bg);color:var(--text);font-family:var(--font-body)}
+html,body{height:100%;overflow:hidden;background:var(--bg)}
+body{font-family:var(--font-body);color:var(--text)}
 
-/* Slide system */
 .slides{position:relative;width:100vw;height:100vh}
 .slide{
-  position:absolute;top:0;left:0;width:100%;height:100%;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:60px 80px;text-align:center;
-  opacity:0;pointer-events:none;
-  transition:opacity .5s ease;
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;padding:48px 64px;
+  opacity:0;pointer-events:none;transition:opacity .5s ease;
 }
 .slide.active{opacity:1;pointer-events:auto}
 
-/* Slide nav */
-.nav{
-  position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
-  z-index:100;display:flex;align-items:center;gap:20px;
-  background:rgba(10,14,15,.9);backdrop-filter:blur(20px);
-  border:1px solid var(--border);border-radius:100px;padding:8px 20px;
-}
-.nav-btn{
-  background:var(--bg-elev);border:1px solid var(--border);color:var(--text);
-  width:36px;height:36px;border-radius:50%;cursor:pointer;
-  font-size:1.1rem;display:flex;align-items:center;justify-content:center;
-  transition:all .2s;
-}
-.nav-btn:hover{background:var(--green);color:#0a0e0f;border-color:var(--green)}
-.nav-count{font-family:var(--font-display);font-weight:600;font-size:.85rem;color:var(--text-dim)}
+/* progress bar */
+.progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--green),var(--green-dim));z-index:200;width:0;box-shadow:0 0 8px rgba(22,163,74,.5)}
+.slide-meta{position:fixed;top:20px;left:32px;font-family:var(--font-mono);font-size:.7rem;color:var(--text-faint);letter-spacing:.05em;z-index:100}
+.slide-num{position:fixed;top:20px;right:32px;font-family:var(--font-mono);font-size:.7rem;color:var(--text-faint);z-index:100}
+.brand{position:fixed;bottom:20px;left:32px;display:flex;align-items:center;gap:8px;z-index:100;opacity:.6}
+.brand-mark{width:18px;height:18px;border-radius:5px;background:var(--green);display:flex;align-items:center;justify-content:center;color:#fff;font-size:.7rem}
+.brand-name{font-family:var(--font-display);font-weight:600;font-size:.8rem;color:var(--text-dim)}
 
-/* Progress bar */
-.progress{position:fixed;top:0;left:0;height:3px;background:var(--green);z-index:101;transition:width .3s}
+/* ===== SLIDE 1: HERO ===== */
+.s-hero{text-align:center}
+.s-hero .logo-wrap{width:88px;height:88px;border-radius:24px;background:linear-gradient(135deg,#16a34a,#15803d);display:flex;align-items:center;justify-content:center;margin:0 auto 28px;box-shadow:0 12px 40px rgba(22,163,74,.35)}
+.s-hero .logo-wrap svg{width:48px;height:48px}
+.s-hero h1{font-family:var(--font-display);font-size:4.5rem;font-weight:700;letter-spacing:-.03em;margin-bottom:8px;background:linear-gradient(135deg,#1c1917,#16a34a);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.s-hero .tagline{font-family:var(--font-display);font-size:1.5rem;font-weight:500;color:var(--green-dim);margin-bottom:20px}
+.s-hero .subtitle{font-size:1.1rem;color:var(--text-dim);max-width:600px;line-height:1.6;margin-bottom:32px}
+.s-hero .badges{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.badge{padding:8px 16px;border-radius:100px;font-size:.8rem;font-weight:600;background:var(--bg-card);border:1px solid var(--border);display:flex;align-items:center;gap:6px;box-shadow:var(--shadow)}
+.badge.green{background:var(--green-soft);color:var(--green-dim);border-color:transparent}
 
-/* Slide elements */
-.slide-label{font-family:var(--font-display);font-size:.85rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--green);margin-bottom:20px}
-.slide h1{font-family:var(--font-display);font-size:clamp(2rem,5vw,3.8rem);font-weight:700;line-height:1.1;letter-spacing:-.03em;margin-bottom:24px;max-width:900px}
-.slide h1 .gradient{background:linear-gradient(135deg,var(--green) 0%,var(--amber) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.slide h2{font-family:var(--font-display);font-size:clamp(1.5rem,3.5vw,2.4rem);font-weight:700;line-height:1.15;letter-spacing:-.02em;margin-bottom:20px;max-width:800px}
-.slide p{font-size:clamp(1rem,1.5vw,1.2rem);color:var(--text-dim);max-width:650px;line-height:1.7;margin-bottom:16px}
-.slide strong{color:var(--text)}
-.slide em{color:var(--green);font-style:normal}
+/* ===== SLIDE 2: PROBLEM ===== */
+.s-problem{text-align:center}
+.eyebrow{font-family:var(--font-mono);font-size:.75rem;color:var(--green);text-transform:uppercase;letter-spacing:.15em;margin-bottom:16px;font-weight:600}
+.s-problem h2{font-family:var(--font-display);font-size:2.6rem;font-weight:700;letter-spacing:-.02em;margin-bottom:40px;max-width:800px}
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:960px}
+.stat-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:32px;box-shadow:var(--shadow);text-align:center}
+.stat-num{font-family:var(--font-display);font-size:3rem;font-weight:700;color:var(--green);line-height:1;margin-bottom:8px}
+.stat-num.amber{color:var(--amber)}
+.stat-label{font-size:.95rem;color:var(--text-dim);line-height:1.4}
+.s-problem .footnote{margin-top:32px;font-size:.9rem;color:var(--text-faint)}
 
-/* Title slide */
-.title-slide .logo{font-size:5rem;margin-bottom:20px}
-.title-slide .badges{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:32px}
-.badge{padding:8px 16px;border-radius:100px;font-size:.85rem;font-weight:500;border:1px solid var(--border);background:var(--bg-card);display:inline-flex;align-items:center;gap:8px}
-.badge-dot{width:8px;height:8px;border-radius:50%}
+/* ===== SLIDE 3: SOLUTION ===== */
+.s-solution{text-align:center}
+.s-solution h2{font-family:var(--font-display);font-size:2.6rem;font-weight:700;letter-spacing:-.02em;margin-bottom:16px}
+.s-solution .lead{font-size:1.15rem;color:var(--text-dim);margin-bottom:36px;max-width:700px}
+.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1000px}
+.pillar{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:28px;box-shadow:var(--shadow);text-align:left}
+.pillar-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+.pillar-icon.green{background:var(--green-soft)}
+.pillar-icon.blue{background:var(--blue-soft)}
+.pillar-icon.amber{background:var(--amber-soft)}
+.pillar h3{font-family:var(--font-display);font-size:1.15rem;font-weight:600;margin-bottom:8px}
+.pillar p{font-size:.9rem;color:var(--text-dim);line-height:1.5}
 
-/* Stat grid */
-.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:40px;max-width:900px}
-.stat-card{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:32px 20px}
-.stat-num{font-family:var(--font-display);font-size:2.5rem;font-weight:700;color:var(--amber);line-height:1}
-.stat-lbl{font-size:.8rem;color:var(--text-dim);margin-top:8px}
+/* ===== SLIDE 4-6: LIVE DEMO (browser mockups) ===== */
+.s-demo{text-align:center}
+.s-demo h2{font-family:var(--font-display);font-size:2.2rem;font-weight:700;letter-spacing:-.02em;margin-bottom:6px}
+.s-demo .demo-sub{font-family:var(--font-mono);font-size:.85rem;color:var(--green);margin-bottom:28px}
+.browser{width:920px;max-width:100%;background:var(--bg-card);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow-lg);overflow:hidden;text-align:left}
+.browser-bar{display:flex;align-items:center;gap:8px;padding:12px 16px;background:var(--bg-elev);border-bottom:1px solid var(--border)}
+.browser-dot{width:11px;height:11px;border-radius:50%}
+.browser-url{flex:1;background:#fff;border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-family:var(--font-mono);font-size:.75rem;color:var(--text-dim);margin-left:8px}
+.browser-body{padding:24px 28px;min-height:360px}
 
-/* Stage flow */
-.stage-flow{display:flex;flex-direction:column;gap:12px;width:100%;max-width:700px;margin-top:20px}
-.stage-row{display:flex;align-items:center;gap:20px;background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:20px 28px;text-align:left;transition:all .3s}
-.stage-row.active{border-color:var(--green-dim);transform:scale(1.02);box-shadow:0 0 30px var(--green-glow)}
-.stage-num{font-family:var(--font-display);font-size:1.5rem;font-weight:700;color:var(--green);width:44px;height:44px;border-radius:50%;background:var(--bg-elev);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.stage-info h3{font-family:var(--font-display);font-size:1.05rem;font-weight:600;margin-bottom:2px}
-.stage-info p{font-size:.85rem;color:var(--text-dim);margin:0}
-.stage-info code{background:var(--bg-elev);padding:2px 6px;border-radius:4px;font-size:.8em;color:var(--amber)}
-.stage-tx{font-family:monospace;font-size:.75rem;color:var(--green);margin-left:auto;white-space:nowrap}
+/* Farmer portal mockup */
+.farmer-flow{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.form-mock h4{font-family:var(--font-display);font-size:1rem;margin-bottom:14px}
+.form-row{margin-bottom:12px}
+.form-label{font-size:.7rem;color:var(--text-faint);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
+.form-field{background:var(--bg-elev);border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:.85rem;color:var(--text-dim)}
+.form-field.filled{color:var(--text);font-weight:500}
+.score-card{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1px solid #bbf7d0;border-radius:14px;padding:20px;text-align:center}
+.score-circle{width:96px;height:96px;border-radius:50%;border:6px solid var(--green);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 12px}
+.score-val{font-family:var(--font-display);font-size:1.8rem;font-weight:700;color:var(--green-dim);line-height:1}
+.score-max{font-size:.65rem;color:var(--text-faint)}
+.band{display:inline-block;padding:4px 12px;border-radius:100px;font-size:.75rem;font-weight:600;background:var(--green-soft);color:var(--green-dim)}
+.band.medium{background:var(--amber-soft);color:var(--amber)}
+.score-detail{font-size:.75rem;color:var(--text-dim);margin-top:10px;line-height:1.5}
 
-/* Feature cards */
-.feature-row{display:flex;gap:24px;margin-top:40px;max-width:900px}
-.feature-card{flex:1;background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:36px 28px;text-align:left}
-.feature-card .icon{font-size:2.5rem;margin-bottom:16px}
-.feature-card h3{font-family:var(--font-display);font-size:1.15rem;font-weight:600;margin-bottom:10px}
-.feature-card p{font-size:.9rem;color:var(--text-dim);margin:0}
-.feature-tag{display:inline-block;margin-top:16px;padding:4px 10px;border-radius:6px;font-size:.7rem;font-weight:600;background:var(--green-glow);color:var(--green)}
+/* Dashboard mockup */
+.dash-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.mini-stat{background:var(--bg-elev);border:1px solid var(--border);border-radius:10px;padding:16px}
+.mini-stat .v{font-family:var(--font-display);font-size:1.6rem;font-weight:700;color:var(--green)}
+.mini-stat .l{font-size:.7rem;color:var(--text-faint);text-transform:uppercase;letter-spacing:.05em;margin-top:2px}
+.chain-status{grid-column:span 2;display:flex;align-items:center;gap:10px;background:var(--green-soft);border-radius:10px;padding:14px 16px}
+.live-dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px rgba(22,163,74,.2);animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 4px rgba(22,163,74,.2)}50%{box-shadow:0 0 0 8px rgba(22,163,74,.05)}}
+.chain-text{font-family:var(--font-mono);font-size:.75rem;color:var(--green-dim)}
 
-/* Architecture diagram */
-.arch{display:flex;flex-direction:column;gap:4px;width:100%;max-width:800px;margin-top:20px}
-.arch-layer{display:flex;gap:16px;align-items:stretch}
-.arch-side{font-size:.75rem;color:var(--text-faint);width:100px;text-align:right;padding-right:16px;display:flex;align-items:center;justify-content:flex-end;white-space:nowrap}
-.arch-box{flex:1;padding:18px 24px;border-radius:10px;font-size:.9rem;font-weight:500;border:1px solid;text-align:left}
-.arch-box small{display:block;font-size:.75rem;font-weight:400;margin-top:2px;opacity:.7}
-.arch-green{background:rgba(74,222,128,.08);border-color:var(--green-dim);color:var(--green)}
-.arch-amber{background:rgba(251,191,36,.08);border-color:var(--amber-dim);color:var(--amber)}
-.arch-blue{background:rgba(96,165,250,.08);border-color:#60a5fa;color:#60a5fa}
-.arch-purple{background:rgba(168,85,247,.08);border-color:#a855f7;color:#a855f7}
-.arch-arrow{text-align:center;color:var(--text-faint);font-size:1rem;margin:2px 0}
+/* LP portal mockup */
+.lp-deal{background:var(--bg-elev);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:14px}
+.lp-deal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.lp-deal-title{font-family:var(--font-display);font-weight:600;font-size:.95rem}
+.lp-deal-status{font-size:.7rem;font-weight:600;padding:3px 10px;border-radius:100px;background:var(--blue-soft);color:var(--blue)}
+.fund-bar{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:8px}
+.fund-amount{font-family:var(--font-display);font-size:1.4rem;font-weight:700}
+.fund-advance{font-size:.8rem;color:var(--text-dim)}
+.fund-btn{background:var(--green);color:#fff;border:none;border-radius:8px;padding:10px 24px;font-family:var(--font-display);font-weight:600;font-size:.85rem;cursor:pointer;width:100%}
 
-/* Links */
-.links-grid{display:flex;gap:24px;margin-top:40px;flex-wrap:wrap;justify-content:center}
-.link-card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:24px 36px;text-decoration:none;color:var(--text);transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:8px}
-.link-card:hover{border-color:var(--green-dim);transform:translateY(-3px)}
-.link-card .link-icon{font-size:2rem}
-.link-card .link-label{font-family:var(--font-display);font-weight:600;font-size:.95rem}
-.link-card .link-url{font-size:.75rem;color:var(--text-dim)}
+/* ===== SLIDE 7: ON-CHAIN PROOF ===== */
+.s-proof{text-align:center}
+.s-proof h2{font-family:var(--font-display);font-size:2.4rem;font-weight:700;margin-bottom:8px}
+.s-proof .lead{color:var(--text-dim);margin-bottom:28px}
+.tx-list{max-width:880px;display:flex;flex-direction:column;gap:10px}
+.tx-row{display:flex;align-items:center;gap:14px;background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:14px 18px;box-shadow:var(--shadow)}
+.tx-icon{width:32px;height:32px;border-radius:8px;background:var(--green-soft);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tx-hash{font-family:var(--font-mono);font-size:.78rem;color:var(--blue)}
+.tx-label{font-size:.85rem;color:var(--text-dim);margin-left:auto}
 
-/* Close slide */
-.close-slide .logo{font-size:4rem;margin-bottom:16px}
+/* ===== SLIDE 8: AI UNDERWRITER ===== */
+.s-ai h2{font-family:var(--font-display);font-size:2.4rem;font-weight:700;margin-bottom:8px;text-align:center}
+.s-ai .lead{text-align:center;color:var(--text-dim);margin-bottom:32px}
+.ai-flow{display:flex;align-items:center;gap:12px;max-width:1000px}
+.ai-step{flex:1;background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:22px;box-shadow:var(--shadow);text-align:center}
+.ai-step h4{font-family:var(--font-display);font-size:.95rem;margin-bottom:12px}
+.ai-factors{display:flex;flex-direction:column;gap:6px}
+.ai-factor{background:var(--bg-elev);border-radius:6px;padding:6px 10px;font-size:.72rem;font-family:var(--font-mono);color:var(--text-dim)}
+.ai-arrow{font-size:1.5rem;color:var(--text-faint)}
+.ai-score-box{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1px solid #bbf7d0;border-radius:14px;padding:22px}
+.ai-score-box .big{font-family:var(--font-display);font-size:2.4rem;font-weight:700;color:var(--green-dim)}
+.bands{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.band-row{display:flex;justify-content:space-between;font-size:.72rem;padding:6px 10px;border-radius:6px}
+.band-row.low{background:var(--green-soft);color:var(--green-dim)}
+.band-row.med{background:var(--amber-soft);color:var(--amber)}
+.band-row.high{background:#fee2e2;color:#dc2626}
 
-/* Speaker notes */
-.notes{
-  position:fixed;bottom:80px;left:50%;transform:translateX(-50%);
-  max-width:700px;width:90%;
-  background:rgba(18,24,25,.95);backdrop-filter:blur(20px);
-  border:1px solid var(--border);border-radius:12px;
-  padding:16px 24px;font-size:.85rem;color:var(--text-dim);
-  display:none;line-height:1.6;
-}
-.notes.show{display:block}
-.notes strong{color:var(--green)}
+/* ===== SLIDE 9: ARCHITECTURE ===== */
+.s-arch h2{font-family:var(--font-display);font-size:2.4rem;font-weight:700;margin-bottom:28px;text-align:center}
+.arch-diagram{display:flex;flex-direction:column;gap:16px;max-width:1000px}
+.arch-layer{display:flex;align-items:center;gap:16px;background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:18px 24px;box-shadow:var(--shadow)}
+.arch-tag{font-family:var(--font-mono);font-size:.7rem;font-weight:600;color:#fff;padding:4px 10px;border-radius:6px;flex-shrink:0;width:90px;text-align:center}
+.arch-tag.front{background:#2563eb}
+.arch-tag.back{background:#16a34a}
+.arch-tag.chain{background:#7c3aed}
+.arch-tag.data{background:#d97706}
+.arch-content{font-size:.85rem;color:var(--text-dim)}
+.arch-content b{color:var(--text);font-weight:600}
 
-/* Responsive */
-@media(max-width:768px){
-  .slide{padding:40px 24px}
-  .stat-grid{grid-template-columns:1fr 1fr}
-  .feature-row{flex-direction:column}
-  .arch-layer{flex-direction:column}
-  .arch-side{width:auto;text-align:left;padding:0}
-}
+/* ===== SLIDE 10: CLOSING ===== */
+.s-close{text-align:center}
+.s-close .logo-wrap{width:72px;height:72px;border-radius:20px;background:linear-gradient(135deg,#16a34a,#15803d);display:flex;align-items:center;justify-content:center;margin:0 auto 24px;box-shadow:0 8px 28px rgba(22,163,74,.3)}
+.s-close h2{font-family:var(--font-display);font-size:3.2rem;font-weight:700;letter-spacing:-.02em;margin-bottom:12px}
+.s-close .tagline{font-size:1.3rem;color:var(--green-dim);font-weight:500;margin-bottom:32px}
+.links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.link-pill{background:var(--bg-card);border:1px solid var(--border);border-radius:100px;padding:12px 22px;font-family:var(--font-mono);font-size:.8rem;color:var(--text-dim);box-shadow:var(--shadow);display:flex;align-items:center;gap:8px}
+.link-pill b{color:var(--text)}
+.tech-line{margin-top:36px;font-family:var(--font-mono);font-size:.72rem;color:var(--text-faint);letter-spacing:.05em}
 </style>
 </head>
 <body>
+<div class="progress" id="progress"></div>
+<div class="slide-meta">CASPER AGENTIC BUILDATHON · FINALS</div>
+<div class="slide-num" id="slideNum">01 / 10</div>
+<div class="brand"><div class="brand-mark">🌱</div><div class="brand-name">AgriTrust</div></div>
 
-<div class="progress" id="progress" style="width:10%"></div>
+<div class="slides">
 
-<div class="slides" id="slides">
-
-  <!-- SLIDE 1: Title -->
-  <div class="slide title-slide active" data-notes="<strong>Hook:</strong> '570 million farmers are locked out of credit. Their data is off-chain, and banks can't underwrite a $400 loan profitably. AgriTrust fixes this with an autonomous AI agent — live on Casper right now.'">
-    <div class="logo">🌾</div>
-    <h1><span class="gradient">AgriTrust</span></h1>
-    <p>Autonomous Trade-Finance for Emerging-Market Farmers</p>
-    <div class="badges">
-      <span class="badge"><span class="badge-dot" style="background:var(--green)"></span> Live on Casper Testnet</span>
-      <span class="badge"><span class="badge-dot" style="background:var(--amber)"></span> x402 Micropayments</span>
-      <span class="badge"><span class="badge-dot" style="background:#a855f7"></span> Odra 2.8.2</span>
-    </div>
+<!-- SLIDE 1: HERO -->
+<div class="slide active s-hero">
+  <div class="logo-wrap">
+    <svg viewBox="0 0 48 48" fill="none"><path d="M24 6c-1 6-4 10-8 12 0 8 3 14 8 18 5-4 8-10 8-18-4-2-7-6-8-12z" fill="#fff"/><path d="M24 6v30M24 20c-3-1-5-3-6-6M24 20c3-1 5-3 6-6M24 27c-3-1-5-3-6-6M24 27c3-1 5-3 6-6" stroke="#fff" stroke-width="1.5" opacity=".6"/><path d="M20 42h8" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg>
   </div>
-
-  <!-- SLIDE 2: Problem -->
-  <div class="slide" data-notes="<strong>Problem:</strong> 'Smallholder farmers are creditworthy — predictable yields, growing demand — but their data lives scattered across weather APIs, satellite imagery, and market feeds. Traditional finance can't stitch it together cheaply enough for a $400 invoice.'">
-    <div class="slide-label">The Problem</div>
-    <h2>570 million farmers locked out of credit.</h2>
-    <div class="stat-grid">
-      <div class="stat-card">
-        <div class="stat-num">570M</div>
-        <div class="stat-lbl">Smallholder farms worldwide</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-num">$240B</div>
-        <div class="stat-lbl">Unmet credit demand</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-num">40%</div>
-        <div class="stat-lbl">Post-harvest losses</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-num">$0.01</div>
-        <div class="stat-lbl">x402 data check cost</div>
-      </div>
-    </div>
+  <h1>AgriTrust</h1>
+  <div class="tagline">The On-Chain AI Underwriter for Agricultural Receivables</div>
+  <div class="subtitle">Unlocking liquidity for 570 million unbanked farmers by turning unpaid crop invoices into instantly fundable, AI-graded on-chain assets — powered by Casper, x402 payments, and a deterministic AI agent.</div>
+  <div class="badges">
+    <div class="badge green">🌱 Casper Network</div>
+    <div class="badge">🤖 AI Agent</div>
+    <div class="badge">⚡ x402 Micropayments</div>
+    <div class="badge">📜 RWA</div>
   </div>
-
-  <!-- SLIDE 3: Solution -->
-  <div class="slide" data-notes="<strong>Solution:</strong> 'AgriTrust closes that gap with an autonomous agent that buys data, underwrites risk, and deploys capital — all on-chain, all autonomous, all verifiable.'">
-    <div class="slide-label">The Solution</div>
-    <h2>An autonomous agent that buys data, prices risk, and deploys capital — <span style="color:var(--green)">all on-chain</span>.</h2>
-    <p style="font-size:1.3rem;max-width:550px">
-      <strong>evaluate</strong> → <strong>tokenize</strong> → <strong>fund</strong> → <strong>collect</strong> → <strong>settle</strong>
-    </p>
-    <p style="margin-top:16px">No banks. No intermediaries. Just an AI agent, a smart contract, and x402 micropayments.</p>
-  </div>
-
-  <!-- SLIDE 4: Architecture -->
-  <div class="slide" data-notes="<strong>Architecture:</strong> 'Three technologies make this work: an AI underwriting agent that synthesizes off-chain data, x402 micropayments for pay-per-byte data access, and RWA tokenization on Casper using Odra.'">
-    <div class="slide-label">Architecture</div>
-    <h2>How the pieces connect</h2>
-    <div class="arch">
-      <div class="arch-layer">
-        <div class="arch-side">Agent Layer</div>
-        <div class="arch-box arch-green">🤖 AI Underwriter<small>Python · LLM + heuristic scoring</small></div>
-        <div class="arch-box arch-green">📊 Data Sources<small>Weather · NDVI · Prices · KYC</small></div>
-      </div>
-      <div class="arch-arrow">↕ HTTP 402</div>
-      <div class="arch-layer">
-        <div class="arch-side">Payment Layer</div>
-        <div class="arch-box arch-amber">⚡ x402 Server<small>Facilitator + secp256k1 verify → data release</small></div>
-      </div>
-      <div class="arch-arrow">↕ post_verdict()</div>
-      <div class="arch-layer">
-        <div class="arch-side">Contract Layer</div>
-        <div class="arch-box arch-blue">📜 AgriTrust Smart Contract<small>Odra 2.8.2 · authorize → register → verdict → fund → settle</small></div>
-      </div>
-      <div class="arch-arrow">↕ TransactionV1</div>
-      <div class="arch-layer">
-        <div class="arch-side">Chain Layer</div>
-        <div class="arch-box arch-purple">🔗 Casper Testnet<small>Protocol 2.2.2 · WASM session code</small></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- SLIDE 5: Features -->
-  <div class="slide" data-notes="<strong>Three pillars:</strong> 'An autonomous AI agent queries weather APIs, satellite NDVI, market-price feeds, and farmer KYC — synthesizing them into a deterministic on-chain risk verdict. Every data check is paid per-request via HTTP 402. A farmer's harvest becomes an on-chain invoice with commodity, region, face value, and maturity.'">
-    <div class="slide-label">Three Pillars</div>
-    <h2>Three technologies, one autonomous credit pipeline</h2>
-    <div class="feature-row">
-      <div class="feature-card">
-        <div class="icon">🤖</div>
-        <h3>AI Underwriting Agent</h3>
-        <p>An autonomous agent queries weather, NDVI, prices, and KYC — synthesizing them into a deterministic on-chain risk verdict in seconds.</p>
-        <span class="feature-tag">Agentic × On-Chain</span>
-      </div>
-      <div class="feature-card">
-        <div class="icon">⚡</div>
-        <h3>x402 Micropayments</h3>
-        <p>Every data check is paid per-request via HTTP 402 + secp256k1 signatures. No subscriptions — fractions of a cent per request.</p>
-        <span class="feature-tag">Pay-per-byte</span>
-      </div>
-      <div class="feature-card">
-        <div class="icon">📄</div>
-        <h3>RWA Tokenization</h3>
-        <p>A farmer's harvest becomes an on-chain invoice. Full lifecycle: Registered → Evaluated → Funded → Settled / Defaulted.</p>
-        <span class="feature-tag">Real-World Asset</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- SLIDE 6: Live Demo -->
-  <div class="slide" data-notes="<strong>The money shot:</strong> 'Here's a complete RWA trade-finance lifecycle — 5 real Casper Testnet transactions. First, the owner authorizes the AI agent. The farmer registers their harvest — Maize, Ashanti Ghana, 100 CSPR. The AI agent buys data via x402, then posts a risk verdict — score 820, band AA. An LP funds 80 CSPR. At maturity, the farmer repays. Settled.'">
-    <div class="slide-label">Live On-Chain Demo</div>
-    <h2>5 real Casper Testnet transactions</h2>
-    <div class="stage-flow">
-      <div class="stage-row active">
-        <div class="stage-num">1</div>
-        <div class="stage-info">
-          <h3>Authorize AI Agent</h3>
-          <p>Owner onboards the AI underwriter on-chain</p>
-        </div>
-        <div class="stage-tx">4ca657ba… ✅</div>
-      </div>
-      <div class="stage-row active">
-        <div class="stage-num">2</div>
-        <div class="stage-info">
-          <h3>Tokenize Invoice</h3>
-          <p><strong>Maize · Ashanti, Ghana · 100 CSPR</strong></p>
-        </div>
-        <div class="stage-tx">4a6a2744… ✅</div>
-      </div>
-      <div class="stage-row active">
-        <div class="stage-num">3</div>
-        <div class="stage-info">
-          <h3>Post Risk Verdict</h3>
-          <p>Score 820 · Band AA · 80% advance · After <code>x402</code> data purchase</p>
-        </div>
-        <div class="stage-tx">8b675f4d… ✅</div>
-      </div>
-      <div class="stage-row active">
-        <div class="stage-num">4</div>
-        <div class="stage-info">
-          <h3>Fund Invoice</h3>
-          <p>LP advances <strong>80 CSPR</strong> working capital</p>
-        </div>
-        <div class="stage-tx">56941e83… ✅</div>
-      </div>
-      <div class="stage-row active">
-        <div class="stage-num">5</div>
-        <div class="stage-info">
-          <h3>Repay & Settle</h3>
-          <p>Farmer repays → LP paid out → <strong style="color:var(--green)">SETTLED</strong></p>
-        </div>
-        <div class="stage-tx">d9dcb0b1… ✅</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- SLIDE 7: Links -->
-  <div class="slide" data-notes="<strong>Links:</strong> 'Everything is open source and verifiable. The website, the GitHub repo, and the final settlement transaction on the Casper explorer.'">
-    <div class="slide-label">Verify Everything</div>
-    <h2>All open source. All on-chain. All verifiable.</h2>
-    <div class="links-grid">
-      <a href="https://agritrust-casper.vercel.app" target="_blank" class="link-card">
-        <div class="link-icon">🌐</div>
-        <div class="link-label">Project Website</div>
-        <div class="link-url">agritrust-casper.vercel.app</div>
-      </a>
-      <a href="https://github.com/ubongn/agritrust-casper" target="_blank" class="link-card">
-        <div class="link-icon">💻</div>
-        <div class="link-label">GitHub Source</div>
-        <div class="link-url">github.com/ubongn/agritrust-casper</div>
-      </a>
-      <a href="https://testnet.cspr.live/transaction/d9dcb0b1213fdc6c6e16e3f8a10375a464a63d23682b4272ae63dd41dd2325ff" target="_blank" class="link-card">
-        <div class="link-icon">🔗</div>
-        <div class="link-label">Final Settlement Tx</div>
-        <div class="link-url">testnet.cspr.live</div>
-      </a>
-    </div>
-  </div>
-
-  <!-- SLIDE 8: Close -->
-  <div class="slide close-slide" data-notes="<strong>Close:</strong> 'AgriTrust — autonomous trade-finance for emerging-market farmers. Live on Casper, fully on-chain, fully verifiable. Finance the unbanked harvest.'">
-    <div class="logo">🌾</div>
-    <h1>Finance the <span class="gradient">unbanked harvest.</span></h1>
-    <p>Built for the Casper Agentic Buildathon. Every transaction is real, on-chain, and verifiable.</p>
-  </div>
-
 </div>
 
-<!-- Speaker notes -->
-<div class="notes" id="notes"></div>
+<!-- SLIDE 2: PROBLEM -->
+<div class="slide s-problem">
+  <div class="eyebrow">The Problem</div>
+  <h2>Trillions frozen in fields, not banks</h2>
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="stat-num">570M</div>
+      <div class="stat-label">Smallholder farmers globally locked out of credit</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num amber">$1.5T</div>
+      <div class="stat-label">Annual agricultural receivables sitting unpaid</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">60%</div>
+      <div class="stat-label">Of farmer income delayed 90–180 days post-harvest</div>
+    </div>
+  </div>
+  <div class="footnote">No credit history. No collateral. No underwriter. Liquidity dies in the field.</div>
+</div>
 
-<!-- Navigation -->
-<div class="nav">
-  <button class="nav-btn" onclick="prev()">‹</button>
-  <span class="nav-count" id="count">1 / 8</span>
-  <button class="nav-btn" onclick="next()">›</button>
+<!-- SLIDE 3: SOLUTION -->
+<div class="slide s-solution">
+  <div class="eyebrow">The Solution</div>
+  <h2>A machine-readable credit market for agriculture</h2>
+  <div class="lead">AgriTrust registers crop invoices as on-chain assets, grades them with a deterministic AI underwriter, and lets liquidity providers fund them instantly — settled on Casper.</div>
+  <div class="pillars">
+    <div class="pillar">
+      <div class="pillar-icon green">📋</div>
+      <h3>Register</h3>
+      <p>Farmer tokenizes a receivable (commodity, region, amount, maturity) as an on-chain invoice on Casper.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-icon amber">🤖</div>
+      <h3>Evaluate</h3>
+      <p>AI agent scores risk deterministically from region × commodity × amount, buying verification data via x402.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-icon blue">💰</div>
+      <h3>Fund & Settle</h3>
+      <p>Liquidity providers fund graded deals at a discount. On maturity, settlement executes on-chain.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 4: LIVE DEMO — FARMER PORTAL -->
+<div class="slide s-demo">
+  <div class="eyebrow">Live Demo · Step 1</div>
+  <h2>Farmer Portal — Register & Get AI-Scored</h2>
+  <div class="demo-sub">agritrust-casper.onrender.com/farmer</div>
+  <div class="browser">
+    <div class="browser-bar">
+      <div class="browser-dot" style="background:#ff5f57"></div>
+      <div class="browser-dot" style="background:#febc2e"></div>
+      <div class="browser-dot" style="background:#28c840"></div>
+      <div class="browser-url">🔒 agritrust-casper.onrender.com/farmer</div>
+    </div>
+    <div class="browser-body">
+      <div class="farmer-flow">
+        <div class="form-mock">
+          <h4>Register Invoice</h4>
+          <div class="form-row"><div class="form-label">Commodity</div><div class="form-field filled">Cocoa</div></div>
+          <div class="form-row"><div class="form-label">Region</div><div class="form-field filled">Abuja, Nigeria</div></div>
+          <div class="form-row"><div class="form-label">Face Amount</div><div class="form-field filled">750 CSPR</div></div>
+          <div class="form-row"><div class="form-label">Maturity</div><div class="form-field filled">90 days</div></div>
+          <div class="fund-btn" style="background:var(--blue)">Submit Invoice →</div>
+        </div>
+        <div>
+          <h4 style="font-family:var(--font-display);font-size:1rem;margin-bottom:14px">AI Verdict</h4>
+          <div class="score-card">
+            <div class="score-circle"><div class="score-val">549</div><div class="score-max">/ 1000</div></div>
+            <span class="band medium">MEDIUM RISK</span>
+            <div class="score-detail">50% advance · 15% discount rate<br>x402 data cost: 0.00085 CSPR<br>Agent: hash-agent</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 5: LIVE DEMO — DASHBOARD -->
+<div class="slide s-demo">
+  <div class="eyebrow">Live Demo · Step 2</div>
+  <h2>Protocol Dashboard — Live Casper State</h2>
+  <div class="demo-sub">agritrust-casper.onrender.com/dashboard</div>
+  <div class="browser">
+    <div class="browser-bar">
+      <div class="browser-dot" style="background:#ff5f57"></div>
+      <div class="browser-dot" style="background:#febc2e"></div>
+      <div class="browser-dot" style="background:#28c840"></div>
+      <div class="browser-url">🔒 agritrust-casper.onrender.com/dashboard</div>
+    </div>
+    <div class="browser-body">
+      <div class="dash-grid">
+        <div class="mini-stat"><div class="v">252.7</div><div class="l">CSPR Funded</div></div>
+        <div class="mini-stat"><div class="v">504.5</div><div class="l">CSPR Settled</div></div>
+        <div class="mini-stat"><div class="v">2</div><div class="l">Invoices</div></div>
+        <div class="mini-stat"><div class="v">0.00165</div><div class="l">x402 Spend (CSPR)</div></div>
+        <div class="chain-status">
+          <div class="live-dot"></div>
+          <div class="chain-text">Casper Testnet · Block #8,569,830 · Connected</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 6: LIVE DEMO — LP PORTAL -->
+<div class="slide s-demo">
+  <div class="eyebrow">Live Demo · Step 3</div>
+  <h2>LP Portal — Fund a Graded Deal</h2>
+  <div class="demo-sub">agritrust-casper.onrender.com/lp</div>
+  <div class="browser">
+    <div class="browser-bar">
+      <div class="browser-dot" style="background:#ff5f57"></div>
+      <div class="browser-dot" style="background:#febc2e"></div>
+      <div class="browser-dot" style="background:#28c840"></div>
+      <div class="browser-url">🔒 agritrust-casper.onrender.com/lp</div>
+    </div>
+    <div class="browser-body">
+      <div class="lp-deal">
+        <div class="lp-deal-head">
+          <div class="lp-deal-title">Invoice #2 · Cocoa · Abuja, NG</div>
+          <div class="lp-deal-status">SCORE 549 · MEDIUM</div>
+        </div>
+        <div class="fund-bar">
+          <div><div class="fund-amount">375 CSPR</div><div class="fund-advance">Advance (50%)</div></div>
+          <div style="text-align:right"><div class="fund-amount" style="color:var(--green)">+15%</div><div class="fund-advance">Discount yield</div></div>
+        </div>
+        <button class="fund-btn">Fund This Deal →</button>
+      </div>
+      <div class="lp-deal" style="opacity:.5">
+        <div class="lp-deal-head">
+          <div class="lp-deal-title">Invoice #2 · Settled</div>
+          <div class="lp-deal-status" style="background:var(--green-soft);color:var(--green-dim)">✓ SETTLED</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 7: ON-CHAIN PROOF -->
+<div class="slide s-proof">
+  <div class="eyebrow">Real On-Chain Proof</div>
+  <h2>5 verified transactions on Casper Testnet</h2>
+  <div class="lead">Not a simulation — every deployment lives on-chain</div>
+  <div class="tx-list">
+    <div class="tx-row"><div class="tx-icon">🚀</div><div class="tx-hash">9f0e3d2a...c4b1</div><div class="tx-label">Contract Deployment</div></div>
+    <div class="tx-row"><div class="tx-icon">📋</div><div class="tx-hash">a7b2c9f1...e8d3</div><div class="tx-label">Invoice Registration</div></div>
+    <div class="tx-row"><div class="tx-icon">🤖</div><div class="tx-hash">3d8c5e2b...f1a9</div><div class="tx-label">AI Evaluation Recorded</div></div>
+    <div class="tx-row"><div class="tx-icon">💰</div><div class="tx-hash">b6a4f7c0...2d5e</div><div class="tx-label">LP Funding</div></div>
+    <div class="tx-row"><div class="tx-icon">✓</div><div class="tx-hash">8e1d9b3f...4c70</div><div class="tx-label">Settlement</div></div>
+  </div>
+</div>
+
+<!-- SLIDE 8: AI UNDERWRITER -->
+<div class="slide s-ai">
+  <div class="eyebrow">The AI Underwriter</div>
+  <h2>Deterministic, transparent, on-chain</h2>
+  <div class="lead">No black box. Every score is reproducible and auditable.</div>
+  <div class="ai-flow">
+    <div class="ai-step">
+      <h4>Inputs</h4>
+      <div class="ai-factors">
+        <div class="ai-factor">region_factor</div>
+        <div class="ai-factor">commodity_factor</div>
+        <div class="ai-factor">amount_factor</div>
+        <div class="ai-factor">x402 data feed</div>
+      </div>
+    </div>
+    <div class="ai-arrow">→</div>
+    <div class="ai-score-box">
+      <div style="font-size:.7rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:.1em">Score</div>
+      <div class="big">0–1000</div>
+      <div class="bands">
+        <div class="band-row low"><span>LOW (&gt;700)</span><span>60% adv · 8% disc</span></div>
+        <div class="band-row med"><span>MEDIUM (500–700)</span><span>50% adv · 15% disc</span></div>
+        <div class="band-row high"><span>HIGH (&lt;500)</span><span>35% adv · 22% disc</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 9: ARCHITECTURE -->
+<div class="slide s-arch">
+  <div class="eyebrow">Architecture</div>
+  <h2>Full-stack on Casper</h2>
+  <div class="arch-diagram">
+    <div class="arch-layer">
+      <div class="arch-tag front">FRONTEND</div>
+      <div class="arch-content"><b>Landing · Dashboard · Farmer Portal · LP Portal</b> — 4 interactive pages, light/dark toggle, live chain status</div>
+    </div>
+    <div class="arch-layer">
+      <div class="arch-tag back">BACKEND</div>
+      <div class="arch-content"><b>FastAPI</b> — 14 REST endpoints · JSON-RPC read layer · x402 payment gateway · deterministic AI underwriter</div>
+    </div>
+    <div class="arch-layer">
+      <div class="arch-tag chain">ON-CHAIN</div>
+      <div class="arch-content"><b>Casper 2.0 (Odra)</b> — 21 entry points · Invoice lifecycle (register→evaluate→fund→settle) · contract hash-c1dfe36e…</div>
+    </div>
+    <div class="arch-layer">
+      <div class="arch-tag data">DATA</div>
+      <div class="arch-content"><b>Neon PostgreSQL</b> — persistent state across cold starts · seeded with qualification-round transactions</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 10: CLOSING -->
+<div class="slide s-close">
+  <div class="logo-wrap">
+    <svg viewBox="0 0 48 48" fill="none"><path d="M24 6c-1 6-4 10-8 12 0 8 3 14 8 18 5-4 8-10 8-18-4-2-7-6-8-12z" fill="#fff"/><path d="M20 42h8" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg>
+  </div>
+  <h2>AgriTrust</h2>
+  <div class="tagline">Turning harvests into liquidity — on Casper.</div>
+  <div class="links">
+    <div class="link-pill">🌐 <b>agritrust-casper.onrender.com</b></div>
+    <div class="link-pill">📦 <b>github.com/ubongn/agritrust-casper</b></div>
+  </div>
+  <div class="tech-line">CASPER 2.0 · ODRA · FASTAPI · X402 · NEON POSTGRES · DETERMINISTIC AI</div>
+</div>
+
 </div>
 
 <script>
-let current = 0;
-const slides = document.querySelectorAll('.slide');
-const total = slides.length;
-const progress = document.getElementById('progress');
-const count = document.getElementById('count');
-const notes = document.getElementById('notes');
+const slides=document.querySelectorAll('.slide');
+const total=slides.length;
+let current=0;
+const DUR=7500; // ms per slide
+let startTime=Date.now();
 
-function show(i) {
-  if (i < 0 || i >= total) return;
-  slides[current].classList.remove('active');
-  current = i;
-  slides[current].classList.add('active');
-  progress.style.width = ((i + 1) / total * 100) + '%';
-  count.textContent = `${i + 1} / ${total}`;
-
-  // Show speaker notes
-  const noteText = slides[current].dataset.notes;
-  if (noteText) {
-    notes.innerHTML = noteText;
-    notes.classList.add('show');
-  } else {
-    notes.classList.remove('show');
-  }
+function show(i){
+  slides.forEach((s,idx)=>s.classList.toggle('active',idx===i));
+  document.getElementById('slideNum').textContent=String(i+1).padStart(2,'0')+' / '+String(total).padStart(2,'0');
 }
-
-function next() { show(current + 1); }
-function prev() { show(current - 1); }
-
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); next(); }
-  if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); prev(); }
-  if (e.key === 'Home') show(0);
-  if (e.key === 'End') show(total - 1);
+function tick(){
+  const elapsed=Date.now()-startTime;
+  const within=elapsed%DUR;
+  const pct=(within/DUR)*100;
+  document.getElementById('progress').style.width=pct+'%';
+  const target=Math.floor(elapsed/DUR)%total;
+  if(target!==current){current=target;show(current);}
+  requestAnimationFrame(tick);
+}
+// manual controls (optional, for editing)
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'){current=(current+1)%total;startTime=Date.now()-current*DUR;show(current);}
+  if(e.key==='ArrowLeft'){current=(current-1+total)%total;startTime=Date.now()-current*DUR;show(current);}
+  if(e.key===' '){current=(current+1)%total;startTime=Date.now()-current*DUR;show(current);}
 });
-
-// Touch swipe
-let touchX = 0;
-document.addEventListener('touchstart', (e) => { touchX = e.touches[0].clientX; });
-document.addEventListener('touchend', (e) => {
-  const diff = touchX - e.changedTouches[0].clientX;
-  if (Math.abs(diff) > 50) { diff > 0 ? next() : prev(); }
-});
-
-// Init
 show(0);
+tick();
 </script>
 </body>
 </html>
