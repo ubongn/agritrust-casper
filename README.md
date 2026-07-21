@@ -409,7 +409,7 @@ AgriTrust is a **real product**, not a demo. The deployment plan:
 |---|---|
 | 🌐 **Website** | [agritrust-casper.onrender.com](https://agritrust-casper.onrender.com) |
 | 📦 **GitHub** | [github.com/ubongn/agritrust-casper](https://github.com/ubongn/agritrust-casper) |
-| 🐦 **X (Twitter)** | *Coming soon — @AgriTrustCasper* |
+| 🐦 **X (Twitter)** | [@agritrustcasper](https://x.com/agritrustcasper) |
 | 💬 **Telegram** | *Coming soon* |
 | 📧 **Contact** | ubongnt@gmail.com |
 
