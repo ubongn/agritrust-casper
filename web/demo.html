@@ -29,12 +29,41 @@ body{font-family:var(--font-body);color:var(--text)}
 .slide{
   position:absolute;inset:0;display:flex;flex-direction:column;
   align-items:center;justify-content:center;padding:48px 64px;
-  opacity:0;pointer-events:none;transition:opacity .5s ease;
+  opacity:0;pointer-events:none;
+  transform:translateX(60px) scale(.96);
+  transition:opacity .6s cubic-bezier(.22,1,.36,1),transform .6s cubic-bezier(.22,1,.36,1);
 }
-.slide.active{opacity:1;pointer-events:auto}
+.slide.active{
+  opacity:1;pointer-events:auto;
+  transform:translateX(0) scale(1);
+  animation:slidePulse .6s cubic-bezier(.22,1,.36,1);
+}
+@keyframes slidePulse{
+  0%{transform:translateX(60px) scale(.96);opacity:0}
+  60%{transform:translateX(-4px) scale(1.01);opacity:1}
+  100%{transform:translateX(0) scale(1);opacity:1}
+}
+/* staggered content entrance */
+.slide.active > *{animation:contentRise .5s cubic-bezier(.22,1,.36,1) both}
+.slide.active > *:nth-child(1){animation-delay:.1s}
+.slide.active > *:nth-child(2){animation-delay:.2s}
+.slide.active > *:nth-child(3){animation-delay:.3s}
+.slide.active > *:nth-child(4){animation-delay:.4s}
+.slide.active > *:nth-child(5){animation-delay:.5s}
+.slide.active > *:nth-child(6){animation-delay:.6s}
+@keyframes contentRise{
+  0%{opacity:0;transform:translateY(20px)}
+  100%{opacity:1;transform:translateY(0)}
+}
+/* slide exit */
+.slide:not(.active){
+  transform:translateX(-60px) scale(.96);
+  transition:opacity .4s ease,transform .4s ease;
+}
 
 /* progress bar */
-.progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--green),var(--green-dim));z-index:200;width:0;box-shadow:0 0 8px rgba(22,163,74,.5)}
+.progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--green),var(--green-dim));z-index:200;width:0;box-shadow:0 0 8px rgba(22,163,74,.5);animation:progressGlow 2s ease-in-out infinite}
+@keyframes progressGlow{0%,100%{box-shadow:0 0 8px rgba(22,163,74,.4)}50%{box-shadow:0 0 16px rgba(22,163,74,.8)}}
 .slide-meta{position:fixed;top:20px;left:32px;font-family:var(--font-mono);font-size:.7rem;color:var(--text-faint);letter-spacing:.05em;z-index:100}
 .slide-num{position:fixed;top:20px;right:32px;font-family:var(--font-mono);font-size:.7rem;color:var(--text-faint);z-index:100}
 .brand{position:fixed;bottom:20px;left:32px;display:flex;align-items:center;gap:8px;z-index:100;opacity:.6}
