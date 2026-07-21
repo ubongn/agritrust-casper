@@ -388,6 +388,15 @@ async def lp_page():
     raise HTTPException(404, "lp.html not found")
 
 
+@app.get("/demo")
+async def demo_page():
+    """Self-playing demo video deck (10 slides, ~75s loop)."""
+    path = os.path.join(WEB_DIR, "demo.html")
+    if os.path.exists(path):
+        return FileResponse(path)
+    raise HTTPException(404, "demo.html not found")
+
+
 def _make_tx(tx_hash: str, ep: str, inv_id: int | None, amount: str):
     from .state import Transaction
     return Transaction(
