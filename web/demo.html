@@ -447,31 +447,70 @@ body{font-family:var(--font-body);color:var(--text)}
 
 </div>
 
+<div id="pauseIndicator" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:300;background:rgba(28,25,23,.85);backdrop-filter:blur(8px);color:#fff;border-radius:16px;padding:20px 32px;display:none;align-items:center;gap:12px;font-family:'Inter',sans-serif;font-size:1rem;box-shadow:0 8px 32px rgba(0,0,0,.2)">
+  <span style="font-size:1.5rem">⏸</span>
+  <div>
+    <div style="font-weight:600">Paused</div>
+    <div style="font-size:.75rem;color:#a8a29e">Press SPACE to resume</div>
+  </div>
+</div>
+
 <script>
 const slides=document.querySelectorAll('.slide');
 const total=slides.length;
+const pauseIndicator=document.getElementById('pauseIndicator');
 let current=0;
 const DUR=7500; // ms per slide
 let startTime=Date.now();
+let paused=false;
+let pauseStart=0;
+let pauseOffset=0;
 
 function show(i){
   slides.forEach((s,idx)=>s.classList.toggle('active',idx===i));
   document.getElementById('slideNum').textContent=String(i+1).padStart(2,'0')+' / '+String(total).padStart(2,'0');
 }
+function getElapsed(){
+  return Date.now()-startTime-pauseOffset;
+}
 function tick(){
-  const elapsed=Date.now()-startTime;
-  const within=elapsed%DUR;
-  const pct=(within/DUR)*100;
-  document.getElementById('progress').style.width=pct+'%';
-  const target=Math.floor(elapsed/DUR)%total;
-  if(target!==current){current=target;show(current);}
+  if(!paused){
+    const elapsed=getElapsed();
+    const within=elapsed%DUR;
+    const pct=(within/DUR)*100;
+    document.getElementById('progress').style.width=pct+'%';
+    const target=Math.floor(elapsed/DUR)%total;
+    if(target!==current){current=target;show(current);}
+  }
   requestAnimationFrame(tick);
 }
-// manual controls (optional, for editing)
 document.addEventListener('keydown',e=>{
-  if(e.key==='ArrowRight'){current=(current+1)%total;startTime=Date.now()-current*DUR;show(current);}
-  if(e.key==='ArrowLeft'){current=(current-1+total)%total;startTime=Date.now()-current*DUR;show(current);}
-  if(e.key===' '){current=(current+1)%total;startTime=Date.now()-current*DUR;show(current);}
+  if(e.key===' '){
+    e.preventDefault();
+    if(paused){
+      // RESUME
+      pauseOffset+=Date.now()-pauseStart;
+      paused=false;
+      pauseIndicator.style.display='none';
+    } else {
+      // PAUSE
+      pauseStart=Date.now();
+      paused=true;
+      pauseIndicator.style.display='flex';
+    }
+  }
+  if(e.key==='ArrowRight'){
+    current=(current+1)%total;
+    pauseOffset=Date.now()-startTime-current*DUR;
+    if(paused){pauseStart=Date.now();}
+    show(current);
+  }
+  if(e.key==='ArrowLeft'){
+    current=(current-1+total)%total;
+    pauseOffset=Date.now()-startTime-current*DUR;
+    if(paused){pauseStart=Date.now();}
+    show(current);
+  }
 });
 show(0);
 tick();
