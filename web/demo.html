@@ -447,18 +447,9 @@ body{font-family:var(--font-body);color:var(--text)}
 
 </div>
 
-<div id="pauseIndicator" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:300;background:rgba(28,25,23,.85);backdrop-filter:blur(8px);color:#fff;border-radius:16px;padding:20px 32px;display:none;align-items:center;gap:12px;font-family:'Inter',sans-serif;font-size:1rem;box-shadow:0 8px 32px rgba(0,0,0,.2)">
-  <span style="font-size:1.5rem">⏸</span>
-  <div>
-    <div style="font-weight:600">Paused</div>
-    <div style="font-size:.75rem;color:#a8a29e">Press SPACE to resume</div>
-  </div>
-</div>
-
 <script>
 const slides=document.querySelectorAll('.slide');
 const total=slides.length;
-const pauseIndicator=document.getElementById('pauseIndicator');
 let current=0;
 const DUR=7500; // ms per slide
 let startTime=Date.now();
@@ -491,12 +482,10 @@ document.addEventListener('keydown',e=>{
       // RESUME
       pauseOffset+=Date.now()-pauseStart;
       paused=false;
-      pauseIndicator.style.display='none';
     } else {
       // PAUSE
       pauseStart=Date.now();
       paused=true;
-      pauseIndicator.style.display='flex';
     }
   }
   if(e.key==='ArrowRight'){
