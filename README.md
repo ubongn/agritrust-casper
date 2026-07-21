@@ -341,3 +341,76 @@ agritrust-casper/
 ## License
 
 Apache-2.0 — see `contracts/Cargo.toml`.
+
+---
+
+## 🗺️ Roadmap
+
+AgriTrust is built for production, not just a hackathon demo. Here's the path to mainnet and beyond.
+
+### Phase 1 — Testnet & Validation ✅ *(Current)*
+- [x] Smart contract deployed on Casper Testnet (21 entry points, Odra 2.8.2)
+- [x] AI underwriter engine — deterministic scoring model (region × commodity × amount)
+- [x] x402 payment integration for on-chain data feeds
+- [x] Interactive dApp — Farmer Portal, LP Portal, Protocol Dashboard
+- [x] 5 verified on-chain transactions (full lifecycle: register → evaluate → fund → settle)
+- [x] PostgreSQL persistence via Neon (survives cold starts)
+
+### Phase 2 — Pilot Program *(Q3 2026)*
+- [ ] Partner with 2–3 agricultural cooperatives in Nigeria & Ghana for real invoice data
+- [ ] Integrate off-chain oracle feeds (weather, commodity prices) via x402 marketplace
+- [ ] Upgrade AI underwriter from deterministic to hybrid ML model (trained on pilot data)
+- [ ] Add multi-currency support (CSPR ↔ local fiat on-ramps)
+- [ ] Implement invoice NFT standard (tradeable receivables on Casper)
+
+### Phase 3 — Mainnet Launch *(Q4 2026)*
+- [ ] Deploy protocol on Casper Mainnet
+- [ ] LP liquidity pool with automated yield distribution
+- [ ] Farmer identity verification via Casper account reputation
+- [ ] Governance module — token-weighted protocol parameter adjustments
+- [ ] Public API for third-party dApps to query/resolve invoices
+
+### Phase 4 — Scale & Ecosystem *(2027)*
+- [ ] Expand to 5+ emerging markets (Kenya, India, Philippines, Brazil, Vietnam)
+- [ ] Cross-chain settlement via Casper bridge integrations
+- [ ] Insurance underwriting integration (parametric crop insurance via x402 data)
+- [ ] Open-source SDK for agricultural fintech builders on Casper
+
+**Target:** Unlock $10M in farmer liquidity by end of 2027, serving 50,000+ smallholder farmers.
+
+---
+
+## 🚀 Long-Term Launch Plans
+
+AgriTrust is a **real product**, not a demo. The deployment plan:
+
+| Component | Current | Production |
+|---|---|---|
+| **Blockchain** | Casper Testnet | Casper Mainnet (Q4 2026) |
+| **Backend** | Render free tier | Render Pro / dedicated node |
+| **Database** | Neon PostgreSQL (free) | Neon Pro / managed Postgres |
+| **Frontend** | Render-served static | CDN + edge cache |
+| **AI Model** | Deterministic rules | Hybrid ML (after pilot data) |
+| **Data Feeds** | Hardcoded x402 feeds | Live x402 marketplace + oracles |
+
+**Revenue model:** Protocol fee of 0.5% on each funded invoice. LPs earn 8–22% discount yield. Farmers pay nothing upfront — the discount is the cost of capital.
+
+**Go-to-market:**
+1. **Cooperative partnerships** — onboard farmer co-ops with existing invoice portfolios
+2. **LP onboarding** — DeFi-native investors seeking real-world yield uncorrelated to crypto
+3. **Casper ecosystem grants** — leverage Casper's DeFi infrastructure (CasperDash, etc.)
+4. **Community building** — farmer education programs + LP AMAs
+
+---
+
+## 🌐 Connect & Community
+
+| Platform | Link |
+|---|---|
+| 🌐 **Website** | [agritrust-casper.onrender.com](https://agritrust-casper.onrender.com) |
+| 📦 **GitHub** | [github.com/ubongn/agritrust-casper](https://github.com/ubongn/agritrust-casper) |
+| 🐦 **X (Twitter)** | *Coming soon — @AgriTrustCasper* |
+| 💬 **Telegram** | *Coming soon* |
+| 📧 **Contact** | ubongnt@gmail.com |
+
+**Built by:** Ubong Ntekim ([@ubong_dev](https://x.com/ubong_dev)) — Abuja, Nigeria.
